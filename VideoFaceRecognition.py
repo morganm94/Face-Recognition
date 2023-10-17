@@ -4,5 +4,6 @@ import cv2
 
 class VideoFaceRecognition:
 
-    def __init__(self):
-        pass
+    def __init__(self, videoPath, facesPath):
+        self.videoPath = videoPath
+        self.facesPath = facesPath
