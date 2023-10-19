@@ -5,7 +5,7 @@ import cv2
 
 class VideoFaceRecognition:
 
-    def __init__(self, pathToVideo, pathToFaces):
+    def __init__(self, pathToVideo: str = "", pathToFaces: list = []):
         self.__pathToVideo = pathToVideo
         self.__pathToFaces = pathToFaces
 
@@ -14,7 +14,6 @@ class VideoFaceRecognition:
         self.__knownFaceNames = []
 
         self.__processThisFrame = True
-        self.__repeatVideo = False
         self.__smallFrameScale = 0.5
         self.__faceRecognitionTolerance = 0.8
         self.__outputFrameScale = 1.0
@@ -23,17 +22,6 @@ class VideoFaceRecognition:
 
         self.__prepareFaceImages()
         self.__videoTitle = Path(self.__pathToVideo).stem
-
-    @property
-    def repeatVideo(self) -> float:
-        return self.__repeatVideo
-
-    @repeatVideo.setter
-    def repeatVideo(self, value) -> None:
-        if (type(value) is not bool):
-            raise ValueError("The value must be 'True' or 'False'")
-
-        self__repeatVideo = value
 
     @property
     def smallFrameScale(self) -> float:
@@ -77,7 +65,7 @@ class VideoFaceRecognition:
         if (not color or len(color) < 3):
             raise ValueError("The value must be, for example, (134, 255, 11)")
 
-        self.__faceRectColor = self.__convertBGR2RGB(color)
+        self.__faceRectColor = color
 
     @property
     def faceNameColor(self) -> tuple:
@@ -88,7 +76,29 @@ class VideoFaceRecognition:
         if (not color or len(color) < 3):
             raise ValueError("The value must be, for example, (134, 255, 11)")
 
-        self.__faceNameColor = self.__convertBGR2RGB(color)
+        self.__faceNameColor = color
+    
+    @property
+    def pathToVideo(self) -> str:
+        return self.__pathToVideo
+
+    @pathToVideo.setter
+    def pathToVideo(self, path: str) -> None:
+        if path == "":
+            raise ValueError("Empty path to video file")
+
+        self.__pathToVideo = path
+
+    @property
+    def pathToFaces(self) -> list:
+        return self.__pathToFaces
+
+    @pathToFaces.setter
+    def pathToFaces(self, path: list) -> None:
+        if not len(path):
+            raise ValueError("Empty path to face file")
+
+        self.__pathToFaces = path
 
     def recognizeAndShow(self) -> None:
         video = cv2.VideoCapture(self.__pathToVideo)
@@ -96,7 +106,7 @@ class VideoFaceRecognition:
         while True:
             ret, frame = video.read()
 
-            if not ret and self.__repeatVideo:
+            if not ret:
                 video.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 continue
 
@@ -206,6 +216,3 @@ class VideoFaceRecognition:
         left   *= scaleMultiplier 
 
         return top, right, bottom, left
-
-    def __convertBGR2RGB(self, color: tuple) -> tuple:
-        return (color[2], color[1], color[0])
