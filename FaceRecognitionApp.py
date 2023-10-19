@@ -5,6 +5,12 @@ from tkinter.colorchooser import askcolor
 import VideoFaceRecognition as VFR
 
 class FaceRecognitionApp:
+    
+    __videoFileTypes = [
+        ("Video", ".mp4 .avi"),
+        ("MP4", ".mp4"),
+        ("AVI", ".avi")
+    ]
 
     def __init__(self, title, geometry):
         self.__vfr = VFR.VideoFaceRecognition()
@@ -45,38 +51,58 @@ class FaceRecognitionApp:
             value = self.__vfr.outputFrameScale
         )
 
+        self.__videoFileOperations = [
+            "Recognize And Show", 
+            "Recognize Aad Save"
+        ]
+        self.__videoFileOperationsDefaultValue = tk.StringVar(
+            value = self.__videoFileOperations[0]
+        )
+
     def __createWidgets(self):
         openVideoBtn = ttk.Button(
             text = "Open Video", 
             command = self.__openVideoFile
-        ).grid(row = 0, column = 0, sticky = "nswe")
+        )
+        openVideoBtn.grid(row = 0, column = 0, sticky = "nswe")
         
         loadFacesBtn = ttk.Button(
             text = "Load Faces", 
             command = self.__openFaceImages
-        ).grid(row = 1, column = 0, sticky = "nswe")
+        )
+        loadFacesBtn.grid(row = 1, column = 0, sticky = "nswe")
+
+        self.__saveVideoBtn = ttk.Button(
+            text = "Save Video",
+            command = self.__saveVideoFile,
+            state = tk.DISABLED
+        )
+        self.__saveVideoBtn.grid(row = 2, column = 0, sticky = "nswe")
                 
         self.__recAndShowBtn = ttk.Button(
             text = "Execute", 
             command = self.__recognizeAndShow,
             state = tk.DISABLED
         )
-        self.__recAndShowBtn.grid(row = 2, column = 0, sticky = "nswe")
+        self.__recAndShowBtn.grid(row = 3, column = 0, sticky = "nswe")
                 
         rectColorChooserBtn = ttk.Button(
             text = "Set Face Rect Color", 
             command = self.__setFaceRectColor
-        ).grid(row = 4, column = 0, sticky = "nswe")
+        )
+        rectColorChooserBtn.grid(row = 4, column = 0, sticky = "nswe")
                 
         faceNameColorBtn = ttk.Button(
-            text = "Set Face Name Color", 
+            text = "Set Face Name Color: ", 
             command = self.__setFaceNameColor
-        ).grid(row = 5, column = 0, sticky = "nswe")
+        )
+        faceNameColorBtn.grid(row = 5, column = 0, sticky = "nswe")
 
         smallFrameScaleLabel = ttk.Label(
-            text = "Small Frame Size",
+            text = "Small Frame Size: ",
             anchor = tk.CENTER
-        ).grid(row = 0, column = 1, sticky = "nswe")
+        )
+        smallFrameScaleLabel.grid(row = 0, column = 1, sticky = "e")
 
         smallFrameScaleSB = ttk.Spinbox(
             from_ = 0.1,
@@ -85,12 +111,14 @@ class FaceRecognitionApp:
             command = self.__setSmallFrameScale,
             wrap = True,
             textvariable = self.smallFrameScaleDefaultValue,
-        ).grid(row = 0, column = 2, sticky = "we")
+        )
+        smallFrameScaleSB.grid(row = 0, column = 2, sticky = "we")
 
         faceRecognitionToleranceLabel = ttk.Label(
-            text = "Face Recognition Tolerance",
+            text = "Face Recognition Tolerance: ",
             anchor = tk.CENTER
-        ).grid(row = 1, column = 1, sticky = "nswe")
+        )
+        faceRecognitionToleranceLabel.grid(row = 1, column = 1, sticky = "e")
 
         faceRecognitionToleranceSB = ttk.Spinbox(
             from_ = 0.1,
@@ -99,12 +127,14 @@ class FaceRecognitionApp:
             command = self.__setFaceRecognitionTolerance,
             wrap = True,
             textvariable = self.faceRecognitionToleranceDefaultValue
-        ).grid(row = 1, column = 2, sticky = "we")
+        )
+        faceRecognitionToleranceSB.grid(row = 1, column = 2, sticky = "we")
 
         outputFrameScaleLabel = ttk.Label(
-            text = "Output Frame Scale",
+            text = "Output Frame Scale: ",
             anchor = tk.CENTER
-        ).grid(row = 2, column = 1, sticky = "nswe")
+        )
+        outputFrameScaleLabel.grid(row = 2, column = 1, sticky = "e")
 
         outputFrameScaleSB = ttk.Spinbox(
             from_ = 0.1,
@@ -113,7 +143,35 @@ class FaceRecognitionApp:
             command = self.__setOutputFrameScale,
             wrap = True,
             textvariable = self.outputFrameScaleDefaultValue
-        ).grid(row = 2, column = 2, sticky = "we")
+        )
+        outputFrameScaleSB.grid(row = 2, column = 2, sticky = "we")
+
+        videoFileOperationsLabel = ttk.Label(
+            text = "Actions: ",
+            justify = tk.RIGHT,
+            anchor = tk.CENTER
+        )
+        videoFileOperationsLabel.grid(row = 3, column = 1, sticky = "e")
+
+        self.__videoFileOperationsCB = ttk.Combobox(
+            values = self.__videoFileOperations,
+            textvariable = self.__videoFileOperationsDefaultValue
+        )
+        self.__videoFileOperationsCB.grid(row = 3, column = 2,  sticky = "we")
+        self.__videoFileOperationsCB.bind(
+            "<<ComboboxSelected>>", 
+            self.__setVideoFileOperation
+        )
+
+    def __setVideoFileOperation(self, event):
+        selection = self.__videoFileOperationsCB.get()
+
+        if selection ==  self.__videoFileOperations[0]:
+            self.__vfr.changeVideoOperationType(True)
+            self.__saveVideoBtn.config(state = "disabled")
+        elif selection == self.__videoFileOperations[1]:
+            self.__vfr.changeVideoOperationType(False)
+            self.__saveVideoBtn.config(state = "normal")
 
     def __setSmallFrameScale(self):
         self.__vfr.smallFrameScale = self.smallFrameScaleDefaultValue.get()
@@ -134,16 +192,21 @@ class FaceRecognitionApp:
         self.__facesUploaded = False
 
         self.__recAndShowBtn.config(state = "disabled")
+
+    def __saveVideoFile(self):
+        pathToSave = filedialog.asksaveasfilename(
+            title = "Save video as",
+            filetypes = self.__videoFileTypes
+        )
+
+        if pathToSave != "":
+            self.__vfr.pathToSaveVideo = pathToSave
         
     def __openVideoFile(self):
         pathToVideo = filedialog.askopenfilename(
-            title="Select video file",
-            filetypes=[
-                ("Video", ".mp4 .avi"),
-                ("MP4", ".mp4"),
-                ("AVI", ".avi")
-            ],
-            multiple=False
+            title = "Select video file",
+            filetypes = self.__videoFileTypes,
+            multiple = False
         )
     
         if pathToVideo != "":

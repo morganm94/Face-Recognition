@@ -8,11 +8,15 @@ class VideoFaceRecognition:
     def __init__(self, pathToVideo: str = "", pathToFaces: list = []):
         self.__pathToVideo = pathToVideo
         self.__pathToFaces = pathToFaces
+        self.__pathToSaveVideo = ""
 
         self.__faceImages = []
         self.__knownFaceEncodings = []
         self.__knownFaceNames = []
 
+        self.__isVideoWriterReady = False
+        self.__isOperationRecognizeAndShow = True
+        self.__isOperationRecognizeAndSave = False
         self.__processThisFrame = True
         self.__smallFrameScale = 0.5
         self.__faceRecognitionTolerance = 0.8
@@ -97,21 +101,44 @@ class VideoFaceRecognition:
 
         self.__pathToFaces = path
 
+    @property
+    def pathToSaveVideo(self) -> str:
+        return self.__pathToSaveVideo
+
+    @pathToSaveVideo.setter
+    def pathToSaveVideo(self, path: str) -> None:
+        if path == "":
+            raise ValueError("Empy video save path")
+
+        self.__pathToSaveVideo = path
+
     def recognizeAndShow(self) -> None:
         self.__prepareFaceImages()
         videoTitle = Path(self.__pathToVideo).stem
 
+        isProcessing = True
         faceLocations = []
         faceEncodings = []
         faceNames = []
+        frameNumber = 0
 
-        video = cv2.VideoCapture(self.__pathToVideo)
+        self.__video = cv2.VideoCapture(self.__pathToVideo)
+        self.__videoLength = int(self.__video.get(cv2.CAP_PROP_FRAME_COUNT))
     
-        while True:
-            ret, frame = video.read()
+        while isProcessing:
+            ret, frame = self.__video.read()
 
-            if not ret:
-                video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            if self.__isOperationRecognizeAndSave and \
+               not self.__isVideoWriterReady:
+                self.__prepareVideoWriter()
+
+            frameNumber += 1
+
+            if frameNumber >= self.__videoLength:
+                isProcessing = False
+
+            if not ret and self.__isOperationRecognizeAndShow:
+                self.__video.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 continue
 
             if self.__processThisFrame:
@@ -187,16 +214,41 @@ class VideoFaceRecognition:
                 fx=self.__outputFrameScale, 
                 fy=self.__outputFrameScale
             )
-            cv2.imshow(videoTitle, resizedFrame)
+
+            if self.__isOperationRecognizeAndShow:
+                cv2.imshow(videoTitle, resizedFrame)
+            elif self.__isOperationRecognizeAndSave:
+                self.__outputVideo.write(resizedFrame)
+                print("Writing frame {} / {}".format(
+                        frameNumber, 
+                        self.__videoLength
+                    )
+                )
 
             key = cv2.waitKey(1)
 
             if key == 27:
                 break
 
-        video.release()
+        self.__video.release()
         cv2.destroyAllWindows()
 
+    def __prepareVideoWriter(self) -> None:
+        videoWidth = int(self.__video.get(cv2.CAP_PROP_FRAME_WIDTH))
+        videoHeight = int(self.__video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+        videoFPS = int(self.__video.get(cv2.CAP_PROP_FPS))
+        
+        fourcc = cv2.VideoWriter_fourcc(*"XVID")
+        self.__outputVideo = cv2.VideoWriter(
+            self.__pathToSaveVideo,
+            fourcc,
+            videoFPS,
+            (videoWidth, videoHeight)
+        )
+
+        self.__isVideoWriterReady = True
+        
     def __prepareFaceImages(self) -> None:
         if not self.__pathToFaces:
             return 
@@ -223,3 +275,7 @@ class VideoFaceRecognition:
 
     def __swapRedAndBlueColors(self, color: tuple) -> tuple:
         return (color[2], color[1], color[0])
+
+    def changeVideoOperationType(self, state: bool) -> None:
+        self.__isOperationRecognizeAndShow = state
+        self.__isOperationRecognizeAndSave = not state
