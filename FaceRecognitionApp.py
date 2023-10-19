@@ -7,7 +7,7 @@ import VideoFaceRecognition as VFR
 class FaceRecognitionApp:
 
     def __init__(self, title, geometry):
-        self.vfr = VFR.VideoFaceRecognition()
+        self.__vfr = VFR.VideoFaceRecognition()
 
         self.__root = tk.Tk()
         self.__root.title(title)
@@ -24,6 +24,9 @@ class FaceRecognitionApp:
         self.__root.rowconfigure(4, weight = 1)
         self.__root.rowconfigure(5, weight = 1)
 
+        self.__videoUploaded = False
+        self.__facesUploaded = False
+
         self.__setWidgetsDefaultValues()
         self.__createWidgets()
 
@@ -31,15 +34,15 @@ class FaceRecognitionApp:
 
     def __setWidgetsDefaultValues(self):
         self.smallFrameScaleDefaultValue = tk.DoubleVar(
-            value = self.vfr.smallFrameScale
+            value = self.__vfr.smallFrameScale
         )
 
         self.faceRecognitionToleranceDefaultValue = tk.DoubleVar(
-            value = self.vfr.faceRecognitionTolerance
+            value = self.__vfr.faceRecognitionTolerance
         )
 
         self.outputFrameScaleDefaultValue = tk.DoubleVar(
-            value = self.vfr.outputFrameScale
+            value = self.__vfr.outputFrameScale
         )
 
     def __createWidgets(self):
@@ -53,10 +56,12 @@ class FaceRecognitionApp:
             command = self.__openFaceImages
         ).grid(row = 1, column = 0, sticky = "nswe")
                 
-        recAndShowBtn = ttk.Button(
+        self.__recAndShowBtn = ttk.Button(
             text = "Execute", 
-            command = self.__recognizeAndShow
-        ).grid(row = 2, column = 0, sticky = "nswe")
+            command = self.__recognizeAndShow,
+            state = tk.DISABLED
+        )
+        self.__recAndShowBtn.grid(row = 2, column = 0, sticky = "nswe")
                 
         rectColorChooserBtn = ttk.Button(
             text = "Set Face Rect Color", 
@@ -111,14 +116,24 @@ class FaceRecognitionApp:
         ).grid(row = 2, column = 2, sticky = "we")
 
     def __setSmallFrameScale(self):
-        self.vfr.smallFrameScale = self.smallFrameScaleDefaultValue.get()
+        self.__vfr.smallFrameScale = self.smallFrameScaleDefaultValue.get()
 
     def __setFaceRecognitionTolerance(self):
-        self.vfr.faceRecognitionTolerance = \
+        self.__vfr.faceRecognitionTolerance = \
             self.faceRecognitionToleranceDefaultValue.get()
 
     def __setOutputFrameScale(self):
-        self.vfr.outputFrameScale = self.outputFrameScaleDefaultValue.get()
+        self.__vfr.outputFrameScale = self.outputFrameScaleDefaultValue.get()
+
+    def __checkPossibilityOfProcessing(self):
+        if self.__videoUploaded and self.__facesUploaded:
+            self.__recAndShowBtn.config(state = "normal")
+    
+    def __clearVideoAndImagePaths(self):
+        self.__videoUploaded = False
+        self.__facesUploaded = False
+
+        self.__recAndShowBtn.config(state = "disabled")
         
     def __openVideoFile(self):
         pathToVideo = filedialog.askopenfilename(
@@ -132,7 +147,9 @@ class FaceRecognitionApp:
         )
     
         if pathToVideo != "":
-            self.vfr.pathToVideo = pathToVideo
+            self.__vfr.pathToVideo = pathToVideo
+            self.__videoUploaded = True
+            self.__checkPossibilityOfProcessing()
     
     def __openFaceImages(self):
         pathToFaces = filedialog.askopenfilenames(
@@ -148,7 +165,9 @@ class FaceRecognitionApp:
         )
     
         if pathToFaces != "":
-            self.vfr.pathToFaces = pathToFaces
+            self.__vfr.pathToFaces = pathToFaces
+            self.__facesUploaded = True
+            self.__checkPossibilityOfProcessing()
 
     def __openColorSelectionDialog(self, color: tuple, winTitle: str) -> tuple:
         color = askcolor(color=color, title=winTitle)
@@ -157,30 +176,24 @@ class FaceRecognitionApp:
             return color[0]
     
     def __setFaceRectColor(self):
-        self.__faceRectColor = self.__openColorSelectionDialog(
-            self.vfr.faceRectColor,
+        faceRectColor = self.__openColorSelectionDialog(
+            self.__vfr.faceRectColor,
             "Select face rectangle color"
         )
-        self.vfr.faceRectColor = self.__faceRectColor
+
+        if faceRectColor is not None:
+            self.__vfr.faceRectColor = faceRectColor
     
     def __setFaceNameColor(self):
-        self.__faceNameColor = self.__openColorSelectionDialog(
-            self.vfr.faceNameColor,
+        faceNameColor = self.__openColorSelectionDialog(
+            self.__vfr.faceNameColor,
             "Select face name color"
         )
-        self.vfr.faceNameColor = self.__faceNameColor
+
+        if faceNameColor is not None:
+            self.__vfr.faceNameColor = faceNameColor
     
     def __recognizeAndShow(self):
-        try:
-            self.vfr.faceRectColor = self.__faceRectColor
-        except:
-            pass
-        
-        try:
-            self.vfr.faceNameColor = self.__faceNameColor
-        except:
-            pass
-    
-        self.vfr.recognizeAndShow()
-
+        self.__vfr.recognizeAndShow()
+        self.__clearVideoAndImagePaths()
 

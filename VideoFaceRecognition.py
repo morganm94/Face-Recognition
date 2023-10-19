@@ -17,8 +17,8 @@ class VideoFaceRecognition:
         self.__smallFrameScale = 0.5
         self.__faceRecognitionTolerance = 0.8
         self.__outputFrameScale = 1.0
-        self.__faceRectColor = (255, 0, 0)
-        self.__faceNameColor = (255, 255, 255)
+        self.__faceRectColor = (0, 0, 255) # BGR Red
+        self.__faceNameColor = (255, 255, 255) # BGR White
 
     @property
     def smallFrameScale(self) -> float:
@@ -55,25 +55,25 @@ class VideoFaceRecognition:
 
     @property
     def faceRectColor(self) -> tuple:
-        return self.__faceRectColor
+        return self.__swapRedAndBlueColors(self.__faceRectColor)
 
     @faceRectColor.setter
     def faceRectColor(self, color: tuple) -> None:
         if (not color or len(color) < 3):
             raise ValueError("The value must be, for example, (134, 255, 11)")
 
-        self.__faceRectColor = color
+        self.__faceRectColor = self.__swapRedAndBlueColors(color)
 
     @property
     def faceNameColor(self) -> tuple:
-        return self.__faceNameColor
+        return self.__swapRedAndBlueColors(self.__faceNameColor)
 
     @faceNameColor.setter
     def faceNameColor(self, color: tuple) -> None:
         if (not color or len(color) < 3):
             raise ValueError("The value must be, for example, (134, 255, 11)")
 
-        self.__faceNameColor = color
+        self.__faceNameColor = self.__swapRedAndBlueColors(color)
     
     @property
     def pathToVideo(self) -> str:
@@ -100,6 +100,10 @@ class VideoFaceRecognition:
     def recognizeAndShow(self) -> None:
         self.__prepareFaceImages()
         videoTitle = Path(self.__pathToVideo).stem
+
+        faceLocations = []
+        faceEncodings = []
+        faceNames = []
 
         video = cv2.VideoCapture(self.__pathToVideo)
     
@@ -197,8 +201,6 @@ class VideoFaceRecognition:
         if not self.__pathToFaces:
             return 
 
-        print(self.__pathToFaces)
-
         for path in self.__pathToFaces:
             img = frn.load_image_file(path)
             self.__faceImages.append(img)
@@ -218,3 +220,6 @@ class VideoFaceRecognition:
         left   *= scaleMultiplier 
 
         return top, right, bottom, left
+
+    def __swapRedAndBlueColors(self, color: tuple) -> tuple:
+        return (color[2], color[1], color[0])
