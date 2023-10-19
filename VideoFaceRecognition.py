@@ -20,9 +20,6 @@ class VideoFaceRecognition:
         self.__faceRectColor = (255, 0, 0)
         self.__faceNameColor = (255, 255, 255)
 
-        self.__prepareFaceImages()
-        self.__videoTitle = Path(self.__pathToVideo).stem
-
     @property
     def smallFrameScale(self) -> float:
         return self.__smallFrameScale
@@ -101,6 +98,9 @@ class VideoFaceRecognition:
         self.__pathToFaces = path
 
     def recognizeAndShow(self) -> None:
+        self.__prepareFaceImages()
+        videoTitle = Path(self.__pathToVideo).stem
+
         video = cv2.VideoCapture(self.__pathToVideo)
     
         while True:
@@ -114,8 +114,8 @@ class VideoFaceRecognition:
                 smallFrame = cv2.resize(
                     frame, 
                     (0, 0), 
-                    fx=self.__smallFrameScale, 
-                    fy=self.__smallFrameScale
+                    fx = self.__smallFrameScale, 
+                    fy = self.__smallFrameScale
                 )
                 rgbSmallFrame = cv2.cvtColor(smallFrame, cv2.COLOR_BGR2RGB)
 
@@ -183,7 +183,7 @@ class VideoFaceRecognition:
                 fx=self.__outputFrameScale, 
                 fy=self.__outputFrameScale
             )
-            cv2.imshow(self.__videoTitle, resizedFrame)
+            cv2.imshow(videoTitle, resizedFrame)
 
             key = cv2.waitKey(1)
 
@@ -196,6 +196,8 @@ class VideoFaceRecognition:
     def __prepareFaceImages(self) -> None:
         if not self.__pathToFaces:
             return 
+
+        print(self.__pathToFaces)
 
         for path in self.__pathToFaces:
             img = frn.load_image_file(path)
