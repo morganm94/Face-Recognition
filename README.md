@@ -12,6 +12,6 @@
 
 ## Screenshots
 
-![UI](ui.png)
+![UI](screenshots/ui.png)
 
-![Detection](detection.png)
+![Detection](screenshots/detection.png)
