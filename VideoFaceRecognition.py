@@ -254,6 +254,8 @@ class VideoFaceRecognition:
             return 
 
         for path in self.__pathToFaces:
+            print("Uploading: {}".format(path))
+
             img = frn.load_image_file(path)
             self.__faceImages.append(img)
 
