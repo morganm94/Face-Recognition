@@ -6,17 +6,27 @@
 2. Upgrade pip
 3. Clone this repository
 4. Activate venv
+```python
+python -m venv .venv
+```
+```python
+.venv\Scripts\activate
+```
+For deactivate
+```python
+deactivate
+```
 5. Install submodules
 ```
 git submodule update --init
 ```
 6. Install face recognition library
 ```python
-pip install libs\face_recog_dlib_file\dlib-19.19.0-cp38-cp38-win_amd64.whl
+python -m pip install libs\face_recog_dlib_file\dlib-19.19.0-cp38-cp38-win_amd64.whl
 ```
 7. Install packages
 ```python
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 > ⚠️ Warning! `face-recognition-models` has a large size
 8. Launch
