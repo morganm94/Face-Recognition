@@ -1,0 +1,3 @@
+[submodule "face_recog_dlib_file"]
+	path = libs/face_recog_dlib_file
+	url = https://github.com/RvTechiNNovate/face_recog_dlib_file
