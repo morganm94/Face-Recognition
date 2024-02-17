@@ -1,4 +1,4 @@
-import FaceRecognitionApp as fra
+import view.FaceRecognitionApp as fra
 
 if __name__ == "__main__":
     title = "Face Recognition App"
