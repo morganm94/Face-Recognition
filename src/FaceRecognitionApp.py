@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import filedialog
 from tkinter import ttk
+from tkinter import filedialog
 from tkinter.colorchooser import askcolor
 import VideoFaceRecognition as VFR
 
