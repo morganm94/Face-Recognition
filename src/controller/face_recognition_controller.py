@@ -6,7 +6,9 @@ class FaceRecognitionController:
 	
 	def __init__(self, view, model):
 		self.__view = view
+
 		self.__model = model
+		self.__model.change_image_signal.connect(self.__update_image)
 
 		self.__view.controller = self
 		self.__view.change_image_output_size_signal.connect(self.__set_output_image_size)
@@ -14,16 +16,18 @@ class FaceRecognitionController:
 		self.__output_img_width = 1280
 		self.__output_img_height = 720
 
-		self.__start_recognition()
+		self.start_recognition()
+
 		self.__view.show()
 
-	def stop_recognition(self) -> None:
-		self.frm.stop()
+	def set_stream_src(self, stream) -> None:
+		self.__model.stream_src = stream
 
-	def __start_recognition(self) -> None:
-		self.frm = FRM()
-		self.frm.change_image_signal.connect(self.__update_image)
-		self.frm.start()
+	def stop_recognition(self) -> None:
+		self.__model.stop()
+
+	def start_recognition(self) -> None:
+		self.__model.start()
 
 	def __set_output_image_size(self, size) -> None:
 		self.__output_img_width = size[0]

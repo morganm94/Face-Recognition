@@ -16,7 +16,6 @@ class FaceRecognitionView(QMainWindow):
 		self.__ui = Ui_MainWindow()
 		self.__ui.setupUi(self)
 
-
 	@property
 	def controller(self):
 		return self.__controller
