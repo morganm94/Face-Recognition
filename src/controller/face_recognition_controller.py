@@ -9,18 +9,30 @@ class FaceRecognitionController:
 		self.__model = model
 
 		self.__view.controller = self
-		self.__view.show()
+		self.__view.change_image_output_size_signal.connect(self.__set_output_image_size)
 
-		self.frm = FRM()
-		self.frm.change_image_signal.connect(self.__update_image)
-		self.frm.start()
+		self.__output_img_width = 1280
+		self.__output_img_height = 720
+
+		self.__start_recognition()
+		self.__view.show()
 
 	def stop_recognition(self) -> None:
 		self.frm.stop()
 
-	def __update_image(self, cv_img) -> None:
-		width = 800
-		height = 800
+	def __start_recognition(self) -> None:
+		self.frm = FRM()
+		self.frm.change_image_signal.connect(self.__update_image)
+		self.frm.start()
 
-		img = convert_cv_to_qt(cv_img, width, height)
-		self.__view.set_image(img)
+	def __set_output_image_size(self, size) -> None:
+		self.__output_img_width = size[0]
+		self.__output_img_height = size[1]
+
+	def __update_image(self, cv_img) -> None:
+		img = convert_cv_to_qt(
+			cv_img, 
+			self.__output_img_width, 
+			self.__output_img_height
+		)
+		self.__view.update_image(img)
