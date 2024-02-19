@@ -64,6 +64,12 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.loadvideo_pushButton.setFont(font)
         self.loadvideo_pushButton.setObjectName("loadvideo_pushButton")
+
+        #Скрытие кнопки при неактивном радиобатоне
+        self.loadvideo_pushButton.setEnabled(False)
+        self.video_radioButton.clicked.connect(self.check_video)
+        self.webcam_radioButton.clicked.connect(self.check_web)
+
         self.verticalLayout.addWidget(self.loadvideo_pushButton)
         self.parametres_pushButton = QtWidgets.QPushButton(self.buttons_frame)
         font = QtGui.QFont()
@@ -109,6 +115,14 @@ class Ui_MainWindow(object):
         #Load buttons clicked
         self.loadimages_pushButton.clicked.connect(self.loadimages_pushButton_clicked)
         self.loadvideo_pushButton.clicked.connect(self.loadvideo_pushButton_clicked)
+
+    def check_video(self):
+        if self.video_radioButton.isChecked():
+            self.loadvideo_pushButton.setEnabled(True)
+
+    def check_web(self):
+        if self.webcam_radioButton.isChecked():
+            self.loadvideo_pushButton.setEnabled(False)
 
     def openparametres(self):
         self.SecondWindow2 = QtWidgets.QWidget()
