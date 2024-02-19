@@ -16,7 +16,7 @@ class FaceRecognitionController:
 		self.__output_img_width = 1280
 		self.__output_img_height = 720
 
-		#self.start_recognition()
+		self.start_recognition()
 
 		self.__main_view.show()
 

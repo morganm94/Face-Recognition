@@ -45,10 +45,12 @@ class MainWindowView(QMainWindow):
 	def __check_video(self):
 		if self.__ui.video_radioButton.isChecked():
 			self.__ui.loadvideo_pushButton.setEnabled(True)
+			self.__ui.webcam_groupBox.setTitle("Видео")
 
 	def __check_web(self):
 		if self.__ui.webcam_radioButton.isChecked():
 			self.__ui.loadvideo_pushButton.setEnabled(False)
+			self.__ui.webcam_groupBox.setTitle("Веб-камера")
 
 	def __open_parametres_win(self):
 		self.open_recognition_parameters_win_signal.emit()

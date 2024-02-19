@@ -58,18 +58,6 @@
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
           <item>
-           <widget class="QPushButton" name="loadimages_pushButton">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Загрузить личность</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QRadioButton" name="webcam_radioButton">
             <property name="font">
              <font>
@@ -106,7 +94,22 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="loadimages_pushButton">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Загрузить личность</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="loadvideo_pushButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="font">
              <font>
               <pointsize>14</pointsize>
@@ -114,6 +117,30 @@
             </property>
             <property name="text">
              <string>Загрузить видео</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="parametres_pushButton">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Параметры</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="recognise_pushButton">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Распознать</string>
             </property>
            </widget>
           </item>
