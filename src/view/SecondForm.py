@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src\view\test.ui'
+# Form implementation generated from reading ui file 'src\view\SecondForm.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -64,6 +64,10 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.recog_error_doubleSpinBox.setFont(font)
+        self.recog_error_doubleSpinBox.setDecimals(1)
+        self.recog_error_doubleSpinBox.setMaximum(1.0)
+        self.recog_error_doubleSpinBox.setSingleStep(0.1)
+        self.recog_error_doubleSpinBox.setProperty("value", 0.6)
         self.recog_error_doubleSpinBox.setObjectName("recog_error_doubleSpinBox")
         self.horizontalLayout_3.addWidget(self.recog_error_doubleSpinBox)
         self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 1)
@@ -126,6 +130,13 @@ class Ui_Form(object):
         color = QtGui.QColor(0, 0, 0)
         self.color_selected_recog_toolButton.clicked.connect(self.color_picker)
 
+    def color_picker(self):
+        # opening color dialog
+        self.color = QtWidgets.QColorDialog(self).getColor()
+        # self.color.setOptions(QtWidgets.QColorDialog.DontUseNativeDialog)
+        self.color.show()
+
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
@@ -139,18 +150,4 @@ class Ui_Form(object):
         self.color_signature_recog_toolButton.setText(_translate("Form", "..."))
         self.scaley_label.setText(_translate("Form", "Масштаб кадра обработки по У"))
 
-    def color_picker(self):
-        # opening color dialog
-        self.color = QtWidgets.QColorDialog(self)
-        #self.color.setOptions(QtWidgets.QColorDialog.DontUseNativeDialog)
-        self.color.show()
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
