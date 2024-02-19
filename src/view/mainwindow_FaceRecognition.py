@@ -103,14 +103,28 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        #Parametres button
+        #Parametres button clicked
         self.parametres_pushButton.clicked.connect(self.openparametres)
+
+        #Load buttons clicked
+        self.loadimages_pushButton.clicked.connect(self.loadimages_pushButton_clicked)
+        self.loadvideo_pushButton.clicked.connect(self.loadvideo_pushButton_clicked)
 
     def openparametres(self):
         self.SecondWindow2 = QtWidgets.QWidget()
         SecondWindow = sf.Ui_Form()
         SecondWindow.setupUi(self.SecondWindow2)
         self.SecondWindow2.show()
+
+    def loadimages_pushButton_clicked(self):
+        options = QtWidgets.QFileDialog.Options()
+        #selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
+        fileName = QtWidgets.QFileDialog.getOpenFileNames(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
+
+    def loadvideo_pushButton_clicked(self):
+        options = QtWidgets.QFileDialog.Options()
+        #selfilter = "Videos (*.mp4 *.avi *.mpeg)"
+        fileName = QtWidgets.QFileDialog.getOpenFileName(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
