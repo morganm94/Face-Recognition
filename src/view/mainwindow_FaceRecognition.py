@@ -132,13 +132,13 @@ class Ui_MainWindow(object):
 
     def loadimages_pushButton_clicked(self):
         options = QtWidgets.QFileDialog.Options()
-        #selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
-        fileName = QtWidgets.QFileDialog.getOpenFileNames(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
+        selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
+        fileName = QtWidgets.QFileDialog.getOpenFileNames(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "",selfilter, options=options)
 
     def loadvideo_pushButton_clicked(self):
         options = QtWidgets.QFileDialog.Options()
-        #selfilter = "Videos (*.mp4 *.avi *.mpeg)"
-        fileName = QtWidgets.QFileDialog.getOpenFileName(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
+        selfilter = "Videos (*.mp4 *.avi *.mpeg)"
+        fileName = QtWidgets.QFileDialog.getOpenFileName(QtWidgets.QMainWindow(),"QFileDialog.getOpenFileName()", "",selfilter, options=options)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
