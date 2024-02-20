@@ -3,12 +3,15 @@ import numpy as np
 import face_recognition as frn
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QThread
-from .faces_data import FacesData
+from utils.faces_data import FacesData
 from utils.stream_types import StreamTypes
+from utils.recognition_parameters import RecognitionParameters
 
 class FaceRecognitionModel(QThread):
 
     change_image_signal = pyqtSignal(np.ndarray)
+
+    __UNKNOWN_FACE_TITLE = "Неизвестный"
     
     def __init__(self):
         super().__init__()
@@ -18,6 +21,18 @@ class FaceRecognitionModel(QThread):
         self.__video_src_path = None
         self.__is_recognition_enabled = False
         self.__faces_data = None
+
+        self.__rec_params = RecognitionParameters(
+            0.5, 0.5, 0.6, (0, 255, 0), (0, 0, 255), (255, 0, 0), 1, 1.0, 1
+        )
+
+    @property
+    def recognition_params(self) -> RecognitionParameters:
+        return self.__rec_params
+
+    @recognition_params.setter
+    def recognition_params(self, value: RecognitionParameters) -> None:
+        self.__rec_params = value
 
     @property
     def stream_src(self) -> StreamTypes:
@@ -45,7 +60,12 @@ class FaceRecognitionModel(QThread):
             ret, frame = stream_capture.read()
 
             if process_current_frame:
-                scaled_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+                scaled_frame = cv2.resize(
+                    frame, 
+                    (0, 0), 
+                    fx=self.__rec_params.fx_resize_scale, 
+                    fy=self.__rec_params.fy_resize_scale
+                )
                 rgb_scaled_frame = cv2.cvtColor(
                     scaled_frame, cv2.COLOR_BGR2RGB
                 )
@@ -62,10 +82,10 @@ class FaceRecognitionModel(QThread):
                         matches = frn.compare_faces(
                             self.__faces_data.encodings,
                             fe,
-                            tolerance=0.6
+                            tolerance=self.__rec_params.rec_tolerance
                         )
 
-                        name = "Неизвестный"
+                        name = self.__UNKNOWN_FACE_TITLE
 
                         face_distances = frn.face_distance(
                             self.__faces_data.encodings, fe
@@ -87,7 +107,18 @@ class FaceRecognitionModel(QThread):
                 bottom *= 2
                 left *= 2
 
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 1)
+                if name == self.__UNKNOWN_FACE_TITLE:
+                    rect_color = self.__rec_params.unknown_face_rect_color
+                else:
+                    rect_color = self.__rec_params.known_face_rect_color
+
+                cv2.rectangle(
+                    frame, 
+                    (left, top), 
+                    (right, bottom), 
+                    rect_color, 
+                    self.__rec_params.face_rect_thick
+                )
 
                 font = cv2.FONT_HERSHEY_COMPLEX
                 cv2.putText(
@@ -95,9 +126,9 @@ class FaceRecognitionModel(QThread):
                     name, 
                     (left, bottom + 30),
                     font, 
-                    1.0,
-                    (0, 255, 0),
-                    2
+                    self.__rec_params.face_rect_text_scale,
+                    self.__rec_params.face_rect_text_color,
+                    self.__rec_params.face_rect_text_thick
                 )
 
             self.change_image_signal.emit(frame)

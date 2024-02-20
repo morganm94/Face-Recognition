@@ -1,9 +1,10 @@
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtWidgets import QWidget
-from view.recognition_parameters_window import Ui_Form as rpw_ui_form
+from view.recognition_parameters_window_view import RecognitionParametersWindowView
 from model.face_recognition_model import FaceRecognitionModel as FRM
 from utils.cv_to_qt_converter import *
 from utils.stream_types import StreamTypes
+from utils.recognition_parameters import RecognitionParameters
 
 class FaceRecognitionController:
 	
@@ -29,9 +30,9 @@ class FaceRecognitionController:
 		self.__model.start()
 
 	def __open_parametres_win(self) -> None:
-		self.__parameters_win = QWidget()
-		parameters_win_ui = rpw_ui_form()
-		parameters_win_ui.setupUi(self.__parameters_win)
+		self.__parameters_win = RecognitionParametersWindowView(
+			self.__model.recognition_params
+		)
 		self.__parameters_win.show()
 
 	def __set_output_image_size(self, size) -> None:
