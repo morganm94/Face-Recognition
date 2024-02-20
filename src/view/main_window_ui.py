@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'src\view\mainwindow_FaceRecognition.ui'
 #
@@ -97,6 +97,7 @@ class Ui_MainWindow(object):
         self.Web_label_2 = QtWidgets.QLabel(self.webcam_groupBox)
         self.Web_label_2.setText("")
         self.Web_label_2.setObjectName("Web_label_2")
+        self.Web_label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.horizontalLayout_2.addWidget(self.Web_label_2)
         self.horizontalLayout.addWidget(self.webcam_groupBox)
         self.gridLayout.addWidget(self.Main_frame, 0, 0, 1, 1)
@@ -107,7 +108,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Распознавание лица"))
         self.webcam_radioButton.setText(_translate("MainWindow", "Веб-камера"))
         self.video_radioButton.setText(_translate("MainWindow", "Видео"))
         self.loadimages_pushButton.setText(_translate("MainWindow", "Загрузить личность"))
