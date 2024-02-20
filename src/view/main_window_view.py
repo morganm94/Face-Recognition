@@ -3,12 +3,20 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from .main_window_ui import Ui_MainWindow
+from utils.stream_types import StreamTypes
 from controller.face_recognition_controller import FaceRecognitionController
 
 class MainWindowView(QMainWindow):
 
 	change_image_output_size_signal = pyqtSignal(tuple)
 	open_recognition_parameters_win_signal = pyqtSignal()
+	start_recognition_signal = pyqtSignal()
+	stop_recognition_signal = pyqtSignal()
+	stream_src_type_signal = pyqtSignal(StreamTypes)
+	face_images_load_signal = pyqtSignal(tuple)
+	video_src_load_signal = pyqtSignal(str)
+
+	is_can_start_recognition = True
 	
 	def __init__(self):
 		super(QMainWindow, self).__init__(None)
@@ -20,7 +28,7 @@ class MainWindowView(QMainWindow):
 		self.__set_connections()
 
 	@property
-	def controller(self):
+	def controller(self) -> FaceRecognitionController:
 		return self.__controller
 
 	@controller.setter
@@ -32,7 +40,7 @@ class MainWindowView(QMainWindow):
 		self.__ui.Web_label_2.setPixmap(image)
 
 	def closeEvent(self, event) -> None:
-		self.__controller.stop_recognition()
+		self.stop_recognition_signal.emit()
 		event.accept()
 
 	def resizeEvent(self, event) -> None:
@@ -42,23 +50,25 @@ class MainWindowView(QMainWindow):
 		)
 		self.change_image_output_size_signal.emit(imageOutputNewSize)
 
-	def __check_video(self):
+	def __check_video(self) -> None:
 		if self.__ui.video_radioButton.isChecked():
+			self.stream_src_type_signal.emit(StreamTypes.video)
 			self.__ui.loadvideo_pushButton.setEnabled(True)
 			self.__ui.webcam_groupBox.setTitle("Видео")
 
-	def __check_web(self):
+	def __check_web(self) -> None:
 		if self.__ui.webcam_radioButton.isChecked():
+			self.stream_src_type_signal.emit(StreamTypes.webcam)
 			self.__ui.loadvideo_pushButton.setEnabled(False)
 			self.__ui.webcam_groupBox.setTitle("Веб-камера")
 
-	def __open_parametres_win(self):
+	def __open_parametres_win(self) -> None:
 		self.open_recognition_parameters_win_signal.emit()
 
-	def __loadimages_pushButton_clicked(self):
+	def __loadimages_pushButton_clicked(self) -> None:
 		options = QFileDialog.Options()
 		selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
-		fileName = QFileDialog.getOpenFileNames(
+		fileNames, _ = QFileDialog.getOpenFileNames(
 			QMainWindow(),
 			"Загрузка изображений", 
 			"",
@@ -66,10 +76,13 @@ class MainWindowView(QMainWindow):
 			options=options
 		)
 
-	def __loadvideo_pushButton_clicked(self):
+		if fileNames:
+			self.face_images_load_signal.emit(tuple(fileNames))
+
+	def __loadvideo_pushButton_clicked(self) -> None:
 		options = QFileDialog.Options()
 		selfilter = "Videos (*.mp4 *.avi *.mpeg)"
-		fileName = QFileDialog.getOpenFileName(
+		fileName, _ = QFileDialog.getOpenFileName(
 			QMainWindow(),
 			"Загрузка видео", 
 			"",
@@ -77,7 +90,20 @@ class MainWindowView(QMainWindow):
 			options=options
 		)
 
-	def __set_connections(self):
+		if fileName:
+			self.video_src_load_signal.emit(fileName)
+
+	def __recognition_processing(self) -> None:
+		if self.is_can_start_recognition:
+			self.start_recognition_signal.emit()
+			self.__ui.recognise_pushButton.setText("Прекратить")
+			self.is_can_start_recognition = False
+		else:
+			self.stop_recognition_signal.emit()
+			self.__ui.recognise_pushButton.setText("Распознать")
+			self.is_can_start_recognition = True
+
+	def __set_connections(self) -> None:
 		self.__ui.video_radioButton.clicked.connect(self.__check_video)
 		self.__ui.webcam_radioButton.clicked.connect(self.__check_web)
 		self.__ui.parametres_pushButton.clicked.connect(
@@ -88,4 +114,7 @@ class MainWindowView(QMainWindow):
         )
 		self.__ui.loadvideo_pushButton.clicked.connect(
 			self.__loadvideo_pushButton_clicked
+		)
+		self.__ui.recognise_pushButton.clicked.connect(
+			self.__recognition_processing
 		)

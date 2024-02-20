@@ -4,6 +4,7 @@ import face_recognition as frn
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QThread
 from .faces_data import FacesData
+from utils.stream_types import StreamTypes
 
 class FaceRecognitionModel(QThread):
 
@@ -12,25 +13,30 @@ class FaceRecognitionModel(QThread):
     def __init__(self):
         super().__init__()
 
-        self.__stream_src = r".\test_resources\Lana_Del_Rey.mp4"
+        self.__stream_src = StreamTypes.webcam
+        self.__face_images = None
+        self.__video_src_path = None
         self.__is_recognition_enabled = False
         self.__faces_data = None
 
-        self.prepare_face_images((r".\test_resources\Lana_Del_Rey.jpg", ))
-
     @property
-    def stream_src(self):
+    def stream_src(self) -> StreamTypes:
         return self.__stream_src
 
     @stream_src.setter
     def stream_src(self, value) -> None:
         self.__stream_src = value
 
+    @property
+    def video_src(self) -> str:
+        return self.__video_src_path
+
+    @video_src.setter
+    def video_src(self, value) -> None:
+        self.__video_src_path = value
+
     def run(self) -> None:
-        if self.__stream_src is not None:
-            stream_capture = cv2.VideoCapture(self.__stream_src)
-        else:
-            return
+        stream_capture = self.__determine_stream_type()
 
         self.__is_recognition_enabled = True
         process_current_frame = True
@@ -51,24 +57,25 @@ class FaceRecognitionModel(QThread):
 
                 faces_names = []
 
-                for fe in faces_encodings:
-                    matches = frn.compare_faces(
-                        self.__faces_data.encodings,
-                        fe,
-                        tolerance=0.6
-                    )
+                if self.__faces_data is not None:
+                    for fe in faces_encodings:
+                        matches = frn.compare_faces(
+                            self.__faces_data.encodings,
+                            fe,
+                            tolerance=0.6
+                        )
 
-                    name = "Unknown"
+                        name = "Unknown"
 
-                    face_distances = frn.face_distance(
-                        self.__faces_data.encodings, fe
-                    )
-                    best_match_index = np.argmin(face_distances)
+                        face_distances = frn.face_distance(
+                            self.__faces_data.encodings, fe
+                        )
+                        best_match_index = np.argmin(face_distances)
 
-                    if matches[best_match_index]:
-                        name = self.__faces_data.names[best_match_index]
+                        if matches[best_match_index]:
+                            name = self.__faces_data.names[best_match_index]
 
-                    faces_names.append(name)
+                        faces_names.append(name)
 
             process_current_frame = not process_current_frame
             
@@ -120,3 +127,9 @@ class FaceRecognitionModel(QThread):
             face_names.append(file_name)
             
         self.__faces_data = FacesData(face_images, face_enc, face_names)
+
+    def __determine_stream_type(self) -> cv2.VideoCapture:
+        if self.__stream_src == StreamTypes.video:
+            return cv2.VideoCapture(self.__video_src_path)
+            
+        return cv2.VideoCapture(0)
