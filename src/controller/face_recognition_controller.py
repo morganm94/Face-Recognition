@@ -35,6 +35,10 @@ class FaceRecognitionController:
 		)
 		self.__parameters_win.show()
 
+		self.__parameters_win.changed_recognition_params_signal.connect(
+			self.__recognition_parameters_changed
+		)
+
 	def __set_output_image_size(self, size) -> None:
 		self.__output_img_width = size[0]
 		self.__output_img_height = size[1]
@@ -55,6 +59,9 @@ class FaceRecognitionController:
 
 	def __set_stream_type(self, stream_type) -> None:
 		self.__model.stream_src = stream_type
+
+	def __recognition_parameters_changed(self, params: RecognitionParameters) -> None:
+		self.__model.recognition_params = params
 
 	def __connect_signals(self) -> None:
 		self.__model.change_image_signal.connect(self.__update_image)

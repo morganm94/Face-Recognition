@@ -23,6 +23,7 @@ class MainWindowView(QMainWindow):
 
 		self.__ui = Ui_MainWindow()
 		self.__ui.setupUi(self)
+		self.showMaximized()
 
 		self.__controller = None
 		self.__set_connections()
