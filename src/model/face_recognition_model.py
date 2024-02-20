@@ -65,7 +65,7 @@ class FaceRecognitionModel(QThread):
                             tolerance=0.6
                         )
 
-                        name = "Unknown"
+                        name = "Неизвестный"
 
                         face_distances = frn.face_distance(
                             self.__faces_data.encodings, fe
@@ -87,9 +87,9 @@ class FaceRecognitionModel(QThread):
                 bottom *= 2
                 left *= 2
 
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 1)
 
-                font = cv2.FONT_HERSHEY_DUPLEX
+                font = cv2.FONT_HERSHEY_COMPLEX
                 cv2.putText(
                     frame, 
                     name, 
