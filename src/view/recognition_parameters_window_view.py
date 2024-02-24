@@ -26,8 +26,6 @@ class RecognitionParametersWindowView(QWidget):
 
 		self.__ui.scale_x_comboBox.addItems(scales)
 		self.__ui.scale_x_comboBox.setCurrentText("0.5")
-		self.__ui.scale_y_comboBox.addItems(scales)
-		self.__ui.scale_y_comboBox.setCurrentText("0.5")
 
 	def __set_parameters(self) -> None:
 		self.__ui.scale_x_comboBox.setCurrentText(
