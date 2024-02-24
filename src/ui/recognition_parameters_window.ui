@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>382</height>
+    <width>560</width>
+    <height>383</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,14 +19,31 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="maximumSize">
+  <property name="minimumSize">
    <size>
-    <width>16777215</width>
-    <height>16777215</height>
+    <width>560</width>
+    <height>383</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>560</width>
+    <height>383</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>560</width>
+    <height>383</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Параметры</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="rightMargin">
@@ -52,26 +69,17 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLabel" name="scale_x_label">
+           <widget class="QLabel" name="scale_label">
             <property name="font">
              <font>
               <pointsize>14</pointsize>
              </font>
             </property>
-            <property name="text">
-             <string>Масштаб кадра обработки по X</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="scale_y_label">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Noto Sans','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:14px; color:#1f2328; background-color:#ffffff;&quot;&gt;Уменьшение размера обрабатываемого кадра. Увеличивается скорость обработки за счет уменьшения точности распознавания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>Масштаб кадра обработки по У</string>
+             <string>Масштаб кадра обработки</string>
             </property>
            </widget>
           </item>
@@ -81,6 +89,9 @@
              <font>
               <pointsize>14</pointsize>
              </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Noto Sans','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:14px; color:#1f2328; background-color:#ffffff;&quot;&gt;Диапазон допустимой погрешности при распознавании. Чем меньше, тем выше точность распознавания. Значение 0.6 обеспечивает оптимальную производительность и точность&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Погрешность распознавания</string>
@@ -165,15 +176,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <widget class="QComboBox" name="scale_x_comboBox">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="scale_y_comboBox">
             <property name="font">
              <font>
               <pointsize>14</pointsize>
