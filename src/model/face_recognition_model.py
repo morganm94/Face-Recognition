@@ -120,6 +120,7 @@ class FaceRecognitionModel(QThread):
                     self.__rec_params.face_rect_thick
                 )
 
+
                 font = cv2.FONT_HERSHEY_COMPLEX
                 cv2.putText(
                     frame, 

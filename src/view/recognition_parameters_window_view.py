@@ -21,10 +21,6 @@ class RecognitionParametersWindowView(QWidget):
 		self.__set_connections()
 		self.__set_parameters()
 
-		self.__selected_rect_color = None
-		self.__unselected_rect_color = None
-		self.__face_rect_text_color = None
-
 	def __set_combobox_values(self) -> None:
 		self.__ui.scale_x_comboBox.addItems(
 			["0.25", "0.5", "0.75"]
@@ -87,22 +83,22 @@ class RecognitionParametersWindowView(QWidget):
 				selected_color.green(), 
 				selected_color.red()
 			)
-
-		return None
+		else:
+			return current
 
 	def __set_selected_rect_color(self) -> None:
 		self.__selected_rect_color = self.__choose_color(
-			self.__params.known_face_rect_color
+			self.__selected_rect_color
 		)
 
 	def __set_unselected_rect_color(self) -> None:
 		self.__unselected_rect_color = self.__choose_color(
-			self.__params.unknown_face_rect_color
+			self.__unselected_rect_color
 		)
 
 	def __set_face_rec_text_color(self) -> None:
 		self.__face_rect_text_color = self.__choose_color(
-			self.__params.face_rect_text_color
+			self.__face_rect_text_color
 		)
 
 	def __set_connections(self) -> None:
