@@ -2,6 +2,7 @@ from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtWidgets import QWidget
 from view.recognition_parameters_window_view import RecognitionParametersWindowView
 from model.face_recognition_model import FaceRecognitionModel as FRM
+from model.recognition_preparing import *
 from utils.cv_to_qt_converter import *
 from utils.stream_types import StreamTypes
 from utils.recognition_parameters import RecognitionParameters
@@ -51,8 +52,8 @@ class FaceRecognitionController:
 		)
 		self.__main_view.update_image(img)
 
-	def __load_face_images(self, images) -> None:
-		self.__model.prepare_face_images(images)
+	def __load_face_images(self, paths_to_imgs) -> None:
+		self.__model.faces_data = prepare_faces_data(paths_to_imgs)
 
 	def __set_video_str_path(self, path) -> None:
 		self.__model.video_src = path
