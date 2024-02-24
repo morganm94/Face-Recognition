@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src\view\recognition_parameters_window.ui'
+# Form implementation generated from reading ui file 'src\ui\recognition_parameters_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -15,13 +15,18 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.setEnabled(True)
-        Form.resize(563, 382)
+        Form.resize(560, 383)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
-        Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        Form.setMinimumSize(QtCore.QSize(560, 383))
+        Form.setMaximumSize(QtCore.QSize(560, 383))
+        Form.setBaseSize(QtCore.QSize(560, 383))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        Form.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(-1, -1, 9, -1)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -40,18 +45,12 @@ class Ui_Form(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.scale_x_label = QtWidgets.QLabel(self.frame)
+        self.scale_label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.scale_x_label.setFont(font)
-        self.scale_x_label.setObjectName("scale_x_label")
-        self.verticalLayout_2.addWidget(self.scale_x_label)
-        self.scale_y_label = QtWidgets.QLabel(self.frame)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.scale_y_label.setFont(font)
-        self.scale_y_label.setObjectName("scale_y_label")
-        self.verticalLayout_2.addWidget(self.scale_y_label)
+        self.scale_label.setFont(font)
+        self.scale_label.setObjectName("scale_label")
+        self.verticalLayout_2.addWidget(self.scale_label)
         self.recog_error_label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -103,12 +102,6 @@ class Ui_Form(object):
         self.scale_x_comboBox.setFont(font)
         self.scale_x_comboBox.setObjectName("scale_x_comboBox")
         self.verticalLayout_3.addWidget(self.scale_x_comboBox)
-        self.scale_y_comboBox = QtWidgets.QComboBox(self.frame)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.scale_y_comboBox.setFont(font)
-        self.scale_y_comboBox.setObjectName("scale_y_comboBox")
-        self.verticalLayout_3.addWidget(self.scale_y_comboBox)
         self.recog_error_doubleSpinBox = QtWidgets.QDoubleSpinBox(self.frame)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -192,9 +185,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.scale_x_label.setText(_translate("Form", "Масштаб кадра обработки по X"))
-        self.scale_y_label.setText(_translate("Form", "Масштаб кадра обработки по У"))
+        Form.setWindowTitle(_translate("Form", "Параметры"))
+        self.scale_label.setToolTip(_translate("Form", "<html><head/><body><p><span style=\" font-family:\'-apple-system\',\'BlinkMacSystemFont\',\'Segoe UI\',\'Noto Sans\',\'Helvetica\',\'Arial\',\'sans-serif\',\'Apple Color Emoji\',\'Segoe UI Emoji\'; font-size:14px; color:#1f2328; background-color:#ffffff;\">Уменьшение размера обрабатываемого кадра. Увеличивается скорость обработки за счет уменьшения точности распознавания.</span></p></body></html>"))
+        self.scale_label.setText(_translate("Form", "Масштаб кадра обработки"))
+        self.recog_error_label.setToolTip(_translate("Form", "<html><head/><body><p><span style=\" font-family:\'-apple-system\',\'BlinkMacSystemFont\',\'Segoe UI\',\'Noto Sans\',\'Helvetica\',\'Arial\',\'sans-serif\',\'Apple Color Emoji\',\'Segoe UI Emoji\'; font-size:14px; color:#1f2328; background-color:#ffffff;\">Диапазон допустимой погрешности при распознавании. Чем меньше, тем выше точность распознавания. Значение 0.6 обеспечивает оптимальную производительность и точность</span></p></body></html>"))
         self.recog_error_label.setText(_translate("Form", "Погрешность распознавания"))
         self.color_selected_recog_label.setText(_translate("Form", "Цвет выделения распознанного лица"))
         self.color_unselected_recog_label.setText(_translate("Form", "Цвет выделения неизвестного лица"))
