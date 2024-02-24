@@ -3,6 +3,6 @@ from dataclasses import dataclass
 
 @dataclass
 class FacesData:
-	src_imgs: list
-	encodings: list
-	names: list
+	src_imgs: np.ndarray
+	encodings: np.ndarray
+	names: np.ndarray

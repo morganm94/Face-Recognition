@@ -13,7 +13,7 @@ class MainWindowView(QMainWindow):
 	start_recognition_signal = pyqtSignal()
 	stop_recognition_signal = pyqtSignal()
 	stream_src_type_signal = pyqtSignal(StreamTypes)
-	face_images_load_signal = pyqtSignal(tuple)
+	face_images_load_signal = pyqtSignal(np.ndarray)
 	video_src_load_signal = pyqtSignal(str)
 
 	is_can_start_recognition = True
@@ -78,7 +78,7 @@ class MainWindowView(QMainWindow):
 		)
 
 		if fileNames:
-			self.face_images_load_signal.emit(tuple(fileNames))
+			self.face_images_load_signal.emit(np.asarray(fileNames))
 
 	def __loadvideo_pushButton_clicked(self) -> None:
 		options = QFileDialog.Options()
