@@ -39,18 +39,12 @@ class Recognizer:
 		return faces_locations, faces_names
 
 	def identify_faces(self, frame, faces_locations, faces_names) -> np.ndarray:
-		for (
-			top, right, bottom, left
-		), name in zip(faces_locations, faces_names):
-			top *= 2
-			right *= 2
-			bottom *= 2
-			left *= 2
+		for face_location, name in zip(faces_locations, faces_names):
+			top, right, bottom, left = self.__return_original_scale(
+				list(face_location)
+			)
 
-			if name == self.__unknown_face_title:
-				rect_color = self.__rec_params.unknown_face_rect_color
-			else:
-				rect_color = self.__rec_params.known_face_rect_color
+			rect_color = self.__define_face_rect_color(name)			
 
 			cv2.rectangle(
 				frame, 
@@ -59,7 +53,6 @@ class Recognizer:
 				rect_color, 
 				self.__rec_params.face_rect_thick
 			)
-
 
 			font = cv2.FONT_HERSHEY_COMPLEX
 			cv2.putText(
@@ -73,3 +66,14 @@ class Recognizer:
 			)
 
 		return frame
+
+	def __define_face_rect_color(self, name) -> tuple:
+		if name == self.__unknown_face_title:
+			return self.__rec_params.unknown_face_rect_color
+		else:
+			return self.__rec_params.known_face_rect_color
+
+	def __return_original_scale(self, location: list) -> list:
+		scale = 1 / self.__rec_params.frame_resize_scale
+
+		return [int(i * scale) for i in location]

@@ -5,23 +5,25 @@ from model.face_recognition_model import FaceRecognitionModel as FRM
 from controller.face_recognition_controller import FaceRecognitionController as FRC
 from utils.recognition_parameters import RecognitionParameters
 
+__DEFAULT_RECOGNITION_PARAMETERS = RecognitionParameters(
+    0.5,
+    0.6, 
+    (0, 255, 0), 
+    (0, 0, 255), 
+    (255, 0, 0), 
+    1, 
+    1.0, 
+    1
+)
+
 def main():
     app = QApplication(sys.argv)
 
     model = FRM()
-    model.recognition_params = RecognitionParameters(
-        0.5, 
-        0.5, 
-        0.6, 
-        (0, 255, 0), 
-        (0, 0, 255), 
-        (255, 0, 0), 
-        1, 
-        1.0, 
-        1
-    )
+    model.recognition_params = __DEFAULT_RECOGNITION_PARAMETERS
 
     view = MWV()
+    
     controller = FRC(view, model)
 
     app.exec()

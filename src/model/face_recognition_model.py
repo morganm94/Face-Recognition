@@ -64,7 +64,7 @@ class FaceRecognitionModel(QThread):
                 rgb_frame = self.__bgr_to_rgb_frame(frame)
                 scaled_frame = self.__scale_frame(
                     rgb_frame, 
-                    self.__rec_params.fx_resize_scale
+                    self.__rec_params.frame_resize_scale
                 )
                 recognizer = Recognizer(
                     "Неизвестный",

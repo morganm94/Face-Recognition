@@ -22,21 +22,16 @@ class RecognitionParametersWindowView(QWidget):
 		self.__set_parameters()
 
 	def __set_combobox_values(self) -> None:
-		self.__ui.scale_x_comboBox.addItems(
-			["0.25", "0.5", "0.75"]
-		)
+		scales = ["0.25", "0.5", "1.0"]
+
+		self.__ui.scale_x_comboBox.addItems(scales)
 		self.__ui.scale_x_comboBox.setCurrentText("0.5")
-		self.__ui.scale_y_comboBox.addItems(
-			["0.25", "0.5", "0.75"]
-		)
+		self.__ui.scale_y_comboBox.addItems(scales)
 		self.__ui.scale_y_comboBox.setCurrentText("0.5")
 
 	def __set_parameters(self) -> None:
 		self.__ui.scale_x_comboBox.setCurrentText(
-			str(self.__params.fx_resize_scale)
-		)
-		self.__ui.scale_y_comboBox.setCurrentText(
-			str(self.__params.fy_resize_scale)
+			str(self.__params.frame_resize_scale)
 		)
 		self.__ui.recog_error_doubleSpinBox.setValue(
 			self.__params.rec_tolerance
@@ -57,11 +52,8 @@ class RecognitionParametersWindowView(QWidget):
 	def __return_parameters(self) -> None:
 		new_params = deepcopy(self.__params)
 		
-		new_params.fx_resize_scale = float(
+		new_params.frame_resize_scale = float(
 			self.__ui.scale_x_comboBox.currentText()
-		)
-		new_params.fy_resize_scale = float(
-			self.__ui.scale_y_comboBox.currentText()
 		)
 		new_params.rec_tolerance = self.__ui.recog_error_doubleSpinBox.value()
 		new_params.known_face_rect_color = self.__selected_rect_color
