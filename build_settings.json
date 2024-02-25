@@ -30,14 +30,6 @@
    "value": true
   },
   {
-   "optionDest": "loglevel",
-   "value": "DEBUG"
-  },
-  {
-   "optionDest": "debug",
-   "value": "all"
-  },
-  {
    "optionDest": "strip",
    "value": false
   },
