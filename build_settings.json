@@ -26,6 +26,10 @@
    "value": "DR_FaceRecognition"
   },
   {
+   "optionDest": "upx_dir",
+   "value": "E:/Projects/AD_FaceRecognition/libs/upx-4.2.2-win64"
+  },
+  {
    "optionDest": "clean_build",
    "value": true
   },
