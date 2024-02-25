@@ -66,7 +66,9 @@ cnn_face_detector = r"%cd%\.venv\Lib\site-packages\face_recognition_models\model
 ```
 face_encoder = r"%cd%\.venv\Lib\site-packages\face_recognition_models\models\dlib_face_recognition_resnet_model_v1.dat"
 ```
-3. Run `build.bat`
+3. Run `auto-py-to-exe`
+4. Load JSON configuration
+5. Convert
 
 ## How to launch Qt5 designer
 

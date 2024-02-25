@@ -1,1 +1,0 @@
-pyinstaller -p %cd%\.venv\Lib\site-packages\face_recognition -p %cd%\src\controller -p %cd%\src\model -p %cd%\src\utils -p %cd%\src\view --clean --onefile -n DR_FaceRecognition %cd%\src\app.py

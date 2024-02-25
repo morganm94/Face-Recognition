@@ -1,0 +1,97 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "E:/Projects/AD_FaceRecognition/src/app.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "E:/Projects/AD_FaceRecognition/Icon.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "DR_FaceRecognition"
+  },
+  {
+   "optionDest": "clean_build",
+   "value": true
+  },
+  {
+   "optionDest": "loglevel",
+   "value": "DEBUG"
+  },
+  {
+   "optionDest": "debug",
+   "value": "all"
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/.venv/Lib/site-packages/face_recognition;face_recognition/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/.venv/Lib/site-packages/face_recognition_models/models;models/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/src/controller;controller/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/src/model;model/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/src/utils;utils/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Projects/AD_FaceRecognition/src/view;view/"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}
