@@ -1,4 +1,4 @@
-import sys
+from sys import argv, exit
 from PyQt5.QtWidgets import QApplication
 from view.main_window_view import MainWindowView as MWV
 from model.face_recognition_model import FaceRecognitionModel as FRM
@@ -17,7 +17,7 @@ __DEFAULT_RECOGNITION_PARAMETERS = RecognitionParameters(
 )
 
 def main():
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
 
     model = FRM()
     model.recognition_params = __DEFAULT_RECOGNITION_PARAMETERS
@@ -29,4 +29,4 @@ def main():
     app.exec()
 
 if __name__ == "__main__":
-    sys.exit(main())
+    exit(main())

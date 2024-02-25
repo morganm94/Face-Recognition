@@ -1,5 +1,5 @@
-import cv2
-import numpy as np
+from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor, resize
+from numpy import ndarray
 from PyQt5.QtCore import pyqtSignal, QThread
 from .recognizer import Recognizer
 from utils.faces_data import FacesData
@@ -8,7 +8,7 @@ from utils.recognition_parameters import RecognitionParameters
 
 class FaceRecognitionModel(QThread):
 
-    change_image_signal = pyqtSignal(np.ndarray)
+    change_image_signal = pyqtSignal(ndarray)
     
     def __init__(self):
         super().__init__()
@@ -90,14 +90,14 @@ class FaceRecognitionModel(QThread):
         self.__is_recognition_enabled = False
         self.wait()
 
-    def __determine_stream_type(self) -> cv2.VideoCapture:
+    def __determine_stream_type(self) -> VideoCapture:
         if self.__stream_src == StreamTypes.video:
-            return cv2.VideoCapture(self.__video_src_path)
+            return VideoCapture(self.__video_src_path)
             
-        return cv2.VideoCapture(0)
+        return VideoCapture(0)
 
-    def __bgr_to_rgb_frame(self, frame: np.ndarray) -> np.ndarray:
-        return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    def __bgr_to_rgb_frame(self, frame: ndarray) -> ndarray:
+        return cvtColor(frame, COLOR_BGR2RGB)
 
-    def __scale_frame(self, frame: np.ndarray, scale: float) -> np.ndarray:
-        return cv2.resize(frame, (0, 0), fx=scale, fy=scale)
+    def __scale_frame(self, frame: ndarray, scale: float) -> ndarray:
+        return resize(frame, (0, 0), fx=scale, fy=scale)

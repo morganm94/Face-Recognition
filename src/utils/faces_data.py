@@ -1,8 +1,8 @@
-import numpy as np
+from numpy import ndarray
 from dataclasses import dataclass
 
 @dataclass
 class FacesData:
-	src_imgs: np.ndarray
-	encodings: np.ndarray
-	names: np.ndarray
+	src_imgs: ndarray
+	encodings: ndarray
+	names: ndarray

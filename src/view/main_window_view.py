@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import ndarray, asarray
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
@@ -13,7 +13,7 @@ class MainWindowView(QMainWindow):
 	start_recognition_signal = pyqtSignal()
 	stop_recognition_signal = pyqtSignal()
 	stream_src_type_signal = pyqtSignal(StreamTypes)
-	face_images_load_signal = pyqtSignal(np.ndarray)
+	face_images_load_signal = pyqtSignal(ndarray)
 	video_src_load_signal = pyqtSignal(str)
 
 	is_can_start_recognition = True
@@ -36,7 +36,7 @@ class MainWindowView(QMainWindow):
 	def controller(self, value) -> None:
 		self.__controller = value
 
-	@pyqtSlot(np.ndarray)
+	@pyqtSlot(ndarray)
 	def update_image(self, image) -> None:
 		self.__ui.Web_label_2.setPixmap(image)
 
@@ -78,7 +78,7 @@ class MainWindowView(QMainWindow):
 		)
 
 		if fileNames:
-			self.face_images_load_signal.emit(np.asarray(fileNames))
+			self.face_images_load_signal.emit(asarray(fileNames))
 
 	def __loadvideo_pushButton_clicked(self) -> None:
 		options = QFileDialog.Options()
