@@ -15,7 +15,7 @@
   },
   {
    "optionDest": "console",
-   "value": true
+   "value": false
   },
   {
    "optionDest": "icon_file",
@@ -63,14 +63,6 @@
   },
   {
    "optionDest": "datas",
-   "value": "E:/Projects/AD_FaceRecognition/.venv/Lib/site-packages/face_recognition;face_recognition/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "E:/Projects/AD_FaceRecognition/.venv/Lib/site-packages/face_recognition_models/models;models/"
-  },
-  {
-   "optionDest": "datas",
    "value": "E:/Projects/AD_FaceRecognition/src/controller;controller/"
   },
   {
@@ -84,6 +76,18 @@
   {
    "optionDest": "datas",
    "value": "E:/Projects/AD_FaceRecognition/src/view;view/"
+  },
+  {
+   "optionDest": "pathex",
+   "value": "E:/Projects/AD_FaceRecognition/.venv/Lib/site-packages"
+  },
+  {
+   "optionDest": "collect_data",
+   "value": "face_recognition_models"
+  },
+  {
+   "optionDest": "collect_binaries",
+   "value": "face_recognition_models"
   }
  ],
  "nonPyinstallerOptions": {

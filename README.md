@@ -36,39 +36,9 @@ python src/app.py
 
 ## Build with PyInstaller
 
-1. Open
-```
-.venv\Lib\site-packages\face_recognition\api.py
-```
-2. Replace
-```
-pose_predictor_68_point = dlib.shape_predictor(predictor_68_point_model)
-```
-```
-pose_predictor_5_point = dlib.shape_predictor(predictor_5_point_model)
-```
-```
-cnn_face_detector = dlib.cnn_face_detection_model_v1(cnn_face_detection_model)
-```
-```
-face_encoder = dlib.face_recognition_model_v1(face_recognition_model)
-```
-to
-```
-pose_predictor_68_point = r"%cd%\.venv\Lib\site-packages\face_recognition_models\models\shape_predictor_68_face_landmarks.dat"
-```
-```
-pose_predictor_5_point = r"%cd%\.venv\Lib\site-packages\face_recognition_models\models\shape_predictor_5_face_landmarks.dat"
-```
-```
-cnn_face_detector = r"%cd%\.venv\Lib\site-packages\face_recognition_models\models\mmod_human_face_detector.dat"
-```
-```
-face_encoder = r"%cd%\.venv\Lib\site-packages\face_recognition_models\models\dlib_face_recognition_resnet_model_v1.dat"
-```
-3. Run `auto-py-to-exe`
-4. Load JSON configuration
-5. Convert
+1. Run `auto-py-to-exe`
+2. Load JSON configuration
+3. Convert
 
 ## How to launch Qt5 designer
 
