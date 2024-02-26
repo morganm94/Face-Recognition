@@ -19,7 +19,7 @@ class Recognizer:
 
 		for fe in faces_encodings:
 			matches = compare_faces(
-				self.__faces_data.encodings.tolist(),
+				self.__faces_data.encodings,
 				fe,
 				tolerance=self.__rec_params.rec_tolerance
 			)
@@ -27,7 +27,7 @@ class Recognizer:
 			name = self.__unknown_face_title
 
 			face_distances = face_distance(
-				self.__faces_data.encodings.tolist(), fe
+				self.__faces_data.encodings, fe
 			)
 			best_match_index = argmin(face_distances)
 

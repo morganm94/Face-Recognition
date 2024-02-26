@@ -1,26 +1,28 @@
-from numpy import ndarray, zeros
 from face_recognition import load_image_file, face_encodings
 from pathlib import Path
 from utils.faces_data import FacesData
 
-def prepare_faces_data(paths: ndarray) -> None:
-    if not paths.size:
-        return None
+def prepare_faces_data(paths: list) -> None:
+    if not paths:
+        return 
 
-    imgs_count = paths.size
+    face_images = []
+    face_enc = []
+    face_names = []
 
-    face_images = zeros(imgs_count, dtype=ndarray)
-    face_enc = zeros(imgs_count, dtype=ndarray)
-    face_names = zeros(imgs_count, dtype=ndarray)
+    for path in paths:
+        try:
+            img = load_image_file(path)
+            face_images.append(img)
 
-    for i in range(imgs_count):
-        img = load_image_file(paths[i])
-        face_images[i] = img
+            fe = face_encodings(img)
+            face_enc.append(fe[0])
 
-        fe = face_encodings(img)[0]
-        face_enc[i] = fe
+            file_name = Path(path).stem
+            face_names.append(file_name)
+        except:
+            print(f"Failed to upload: {path}")
 
-        file_name = Path(paths[i]).stem
-        face_names[i] = file_name
+    print(face_names)
         
     return FacesData(face_images, face_enc, face_names)
