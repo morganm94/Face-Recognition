@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "E:/Projects/AD_FaceRecognition/Icon.ico"
+   "value": "E:/Projects/AD_FaceRecognition/src/ui/images/Icon.ico"
   },
   {
    "optionDest": "name",
@@ -35,7 +35,7 @@
   },
   {
    "optionDest": "splash",
-   "value": "E:/Projects/AD_FaceRecognition/splash_screen.png"
+   "value": "E:/Projects/AD_FaceRecognition/src/ui/images/SplashScreen.png"
   },
   {
    "optionDest": "strip",
