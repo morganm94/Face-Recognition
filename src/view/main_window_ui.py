@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src\view\main_window_ui.ui'
+# Form implementation generated from reading ui file 'src\ui\main_window_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -9,13 +9,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from .resources_rc import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1020, 720)
         MainWindow.setMinimumSize(QtCore.QSize(640, 400))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/Icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -108,6 +111,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.webcam_groupBox)
         self.gridLayout.addWidget(self.Main_frame, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1020, 21))
+        self.menuBar.setObjectName("menuBar")
+        self.About_menu = QtWidgets.QMenu(self.menuBar)
+        self.About_menu.setObjectName("About_menu")
+        MainWindow.setMenuBar(self.menuBar)
+        self.menuBar.addAction(self.About_menu.menuAction())
+        self.designers_action = QtWidgets.QAction("Информация о разработчиках")
+        self.inf_action = QtWidgets.QAction("Описание приложения")
+        self.About_menu.addAction(self.designers_action)
+        self.About_menu.addAction(self.inf_action)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -122,3 +136,5 @@ class Ui_MainWindow(object):
         self.parametres_pushButton.setText(_translate("MainWindow", "Параметры"))
         self.recognise_pushButton.setText(_translate("MainWindow", "Распознать"))
         self.webcam_groupBox.setTitle(_translate("MainWindow", "Веб-камера"))
+        self.About_menu.setTitle(_translate("MainWindow", "О программе"))
+

@@ -1,5 +1,5 @@
-import numpy as np
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget
+from numpy import ndarray
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from .main_window_ui import Ui_MainWindow
@@ -13,9 +13,10 @@ class MainWindowView(QMainWindow):
 	start_recognition_signal = pyqtSignal()
 	stop_recognition_signal = pyqtSignal()
 	stream_src_type_signal = pyqtSignal(StreamTypes)
-	face_images_load_signal = pyqtSignal(np.ndarray)
+	face_images_load_signal = pyqtSignal(list)
 	video_src_load_signal = pyqtSignal(str)
 
+	
 	is_can_start_recognition = True
 	
 	def __init__(self):
@@ -36,7 +37,7 @@ class MainWindowView(QMainWindow):
 	def controller(self, value) -> None:
 		self.__controller = value
 
-	@pyqtSlot(np.ndarray)
+	@pyqtSlot(ndarray)
 	def update_image(self, image) -> None:
 		self.__ui.Web_label_2.setPixmap(image)
 
@@ -50,6 +51,10 @@ class MainWindowView(QMainWindow):
 			self.__ui.Web_label_2.height()
 		)
 		self.change_image_output_size_signal.emit(imageOutputNewSize)
+
+	def reset_recognition_status(self) -> None:
+		self.__ui.recognise_pushButton.setText("Распознать")
+		self.is_can_start_recognition = True
 
 	def __check_video(self) -> None:
 		if self.__ui.video_radioButton.isChecked():
@@ -78,7 +83,7 @@ class MainWindowView(QMainWindow):
 		)
 
 		if fileNames:
-			self.face_images_load_signal.emit(np.asarray(fileNames))
+			self.face_images_load_signal.emit(fileNames)
 
 	def __loadvideo_pushButton_clicked(self) -> None:
 		options = QFileDialog.Options()
@@ -104,6 +109,22 @@ class MainWindowView(QMainWindow):
 			self.__ui.recognise_pushButton.setText("Распознать")
 			self.is_can_start_recognition = True
 
+	def __inf_describe(self, sender):
+
+		msgBox = QMessageBox()
+		msgBox.setText("Приложение позволяет определять личности по загруженным изображением лиц.\n\nИмеется возможность выбрать распознавание как с вебкамеры, так и с загруженного видеоматериала.\n\nВ окне параметров пользователь может изменять точность распознавания и другие характеристики.")
+		msgBox.setWindowTitle("Описание приложения")
+		msgBox.exec()
+
+	def __inf_designers(self, sender):
+
+		msgBox = QMessageBox()
+		strdes = "Волгоградский государственный университет \nПРИМ-221\nАбдразаков Дамир\nИВТМ-221\nСкидан Роман\n2024"
+		msgBox.setText(strdes)
+
+		msgBox.setWindowTitle("Информация о разработчиках")
+		msgBox.exec()
+
 	def __set_connections(self) -> None:
 		self.__ui.video_radioButton.clicked.connect(self.__check_video)
 		self.__ui.webcam_radioButton.clicked.connect(self.__check_web)
@@ -119,3 +140,5 @@ class MainWindowView(QMainWindow):
 		self.__ui.recognise_pushButton.clicked.connect(
 			self.__recognition_processing
 		)
+		self.__ui.designers_action.triggered.connect(self.__inf_designers)
+		self.__ui.inf_action.triggered.connect(self.__inf_describe)
