@@ -51,6 +51,10 @@ class MainWindowView(QMainWindow):
 		)
 		self.change_image_output_size_signal.emit(imageOutputNewSize)
 
+	def reset_recognition_status(self) -> None:
+		self.__ui.recognise_pushButton.setText("Распознать")
+		self.is_can_start_recognition = True
+
 	def __check_video(self) -> None:
 		if self.__ui.video_radioButton.isChecked():
 			self.stream_src_type_signal.emit(StreamTypes.video)

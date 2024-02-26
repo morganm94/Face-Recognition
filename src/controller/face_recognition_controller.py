@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QPixmap, QColor
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from view.recognition_parameters_window_view import RecognitionParametersWindowView
 from model.face_recognition_model import FaceRecognitionModel as FRM
 from model.recognition_preparing import *
@@ -64,8 +64,19 @@ class FaceRecognitionController:
 	def __recognition_parameters_changed(self, params: RecognitionParameters) -> None:
 		self.__model.recognition_params = params
 
+	def __show_empy_path_error(self) -> None:
+		usr_responce = QMessageBox.warning(
+			self.__main_view, 
+			"Внимание!",
+			"Видео для распознавания не загружено",
+			QMessageBox.Cancel
+		)
+
+		self.__main_view.reset_recognition_status()
+
 	def __connect_signals(self) -> None:
 		self.__model.change_image_signal.connect(self.__update_image)
+		self.__model.on_empty_video_path_signal.connect(self.__show_empy_path_error)
 		self.__main_view.change_image_output_size_signal.connect(
 			self.__set_output_image_size
 		)

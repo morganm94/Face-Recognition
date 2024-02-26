@@ -9,6 +9,7 @@ from utils.recognition_parameters import RecognitionParameters
 class FaceRecognitionModel(QThread):
 
     change_image_signal = pyqtSignal(ndarray)
+    on_empty_video_path_signal = pyqtSignal()
     
     def __init__(self):
         super().__init__()
@@ -54,6 +55,9 @@ class FaceRecognitionModel(QThread):
     def run(self) -> None:
         stream_capture = self.__determine_stream_type()
 
+        if stream_capture is None:
+            return
+
         self.__is_recognition_enabled = True
         process_current_frame = True
         
@@ -92,9 +96,13 @@ class FaceRecognitionModel(QThread):
 
     def __determine_stream_type(self) -> VideoCapture:
         if self.__stream_src == StreamTypes.video:
-            return VideoCapture(self.__video_src_path)
-            
-        return VideoCapture(0)
+            if self.__video_src_path is not None:
+                return VideoCapture(self.__video_src_path)
+            else:
+                self.on_empty_video_path_signal.emit()
+                return None
+        else:
+            return VideoCapture(0)
 
     def __bgr_to_rgb_frame(self, frame: ndarray) -> ndarray:
         return cvtColor(frame, COLOR_BGR2RGB)
