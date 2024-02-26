@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="icons">
-    <file>Icon.ico</file>
+  <qresource prefix="mainWindow">
+    <file>images/Icon.ico</file>
   </qresource>
 </RCC>

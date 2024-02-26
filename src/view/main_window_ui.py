@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src\ui\main_window_ui.ui'
+# Form implementation generated from reading ui file '.\src\ui\main_window_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1020, 720)
         MainWindow.setMinimumSize(QtCore.QSize(640, 400))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/Icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/mainWindow/images/Icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")

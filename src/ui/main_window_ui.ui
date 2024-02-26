@@ -20,8 +20,8 @@
    <string>Распознание личности</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="main_window_resources.qrc">
-    <normaloff>:/icons/Icon.ico</normaloff>:/icons/Icon.ico</iconset>
+   <iconset resource="resources.qrc">
+    <normaloff>:/mainWindow/images/Icon.ico</normaloff>:/mainWindow/images/Icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -203,7 +203,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="main_window_resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>
