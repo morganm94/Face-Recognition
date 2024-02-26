@@ -201,6 +201,22 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1020</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="About_menu">
+    <property name="title">
+     <string>О программе</string>
+    </property>
+   </widget>
+   <addaction name="About_menu"/>
+  </widget>
  </widget>
  <resources>
   <include location="resources.qrc"/>

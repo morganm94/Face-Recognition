@@ -1,5 +1,5 @@
 from numpy import ndarray
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from .main_window_ui import Ui_MainWindow
@@ -108,6 +108,19 @@ class MainWindowView(QMainWindow):
 			self.__ui.recognise_pushButton.setText("Распознать")
 			self.is_can_start_recognition = True
 
+	def __inf_describe(self, sender):
+		msgBox = QMessageBox()
+		msgBox.setText("Приложение позволяет определять личности по загруженным изображением лиц.\n\nИмеется возможность выбрать распознавание как с вебкамеры, так и с загруженного видеоматериала.\n\nВ окне параметров пользователь может изменять точность распознавания и другие характеристики.")
+		msgBox.setWindowTitle("Описание приложения")
+		msgBox.exec()
+
+	def __inf_designers(self, sender):
+		msgBox = QMessageBox()
+		strdes = "Волгоградский государственный университет \nПРИМ-221\nАбдразаков Дамир\nИВТМ-221\nСкидан Роман\n2024"
+		msgBox.setText(strdes)
+		msgBox.setWindowTitle("Информация о разработчиках")
+		msgBox.exec()
+
 	def __set_connections(self) -> None:
 		self.__ui.video_radioButton.clicked.connect(self.__check_video)
 		self.__ui.webcam_radioButton.clicked.connect(self.__check_web)
@@ -123,3 +136,5 @@ class MainWindowView(QMainWindow):
 		self.__ui.recognise_pushButton.clicked.connect(
 			self.__recognition_processing
 		)
+		self.__ui.designers_action.triggered.connect(self.__inf_designers)
+		self.__ui.inf_action.triggered.connect(self.__inf_describe)
