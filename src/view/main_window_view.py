@@ -1,6 +1,7 @@
 import sys
 from numpy import ndarray
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget, QMessageBox
+from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QWidget, QMessageBox, 
+	                         QAction)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from .main_window_ui import Ui_MainWindow
@@ -16,8 +17,9 @@ class MainWindowView(QMainWindow):
 	stream_src_type_signal = pyqtSignal(StreamTypes)
 	face_images_load_signal = pyqtSignal(list)
 	video_src_load_signal = pyqtSignal(str)
-	clear_video_src_path = pyqtSignal()
-	clear_faces_src_paths = pyqtSignal()
+	clear_video_src_path_signal = pyqtSignal()
+	clear_faces_src_paths_signal = pyqtSignal()
+	open_about_window_signal = pyqtSignal()
 
 	is_can_start_recognition = True
 	
@@ -56,7 +58,14 @@ class MainWindowView(QMainWindow):
 
 	def reset_recognition_status(self) -> None:
 		self.__ui.recognise_pushButton.setText("Распознать")
-		self.is_can_start_recognition = True
+		self.__set_buttons_enable(True)
+
+	def add_webcam_sources(self, src: list) -> None:
+		if not src:
+			self.__ui.defaultWebcam.setEnabled(False)
+			return 
+
+		self.__ui.defaultWebcam.setChecked(True)
 
 	def __check_video(self) -> None:
 		if self.__ui.video_radioButton.isChecked():
@@ -65,6 +74,7 @@ class MainWindowView(QMainWindow):
 		if self.__ui.useVideoStreamAction.isChecked():
 			self.__ui.video_radioButton.setChecked(True)
 
+		self.__ui.defaultWebcam.setChecked(False)
 		self.__ui.uploadVideoSrcAction.setEnabled(True)
 		self.__ui.loadvideo_pushButton.setEnabled(True)
 		self.__ui.webcam_groupBox.setTitle("Видео")
@@ -72,7 +82,10 @@ class MainWindowView(QMainWindow):
 
 	def __check_web(self) -> None:
 		if self.__ui.webcam_radioButton.isChecked():
-			pass
+			self.__ui.defaultWebcam.setChecked(True)
+
+		if self.__ui.defaultWebcam.isChecked():
+			self.__ui.webcam_radioButton.setChecked(True)
 
 		self.__ui.useVideoStreamAction.setChecked(False)
 		self.__ui.uploadVideoSrcAction.setEnabled(False)
@@ -115,19 +128,33 @@ class MainWindowView(QMainWindow):
 		if self.is_can_start_recognition:
 			self.start_recognition_signal.emit()
 			self.__ui.recognise_pushButton.setText("Прекратить")
-			self.is_can_start_recognition = False
+			self.__set_buttons_enable(False)
 		else:
 			self.stop_recognition_signal.emit()
 			self.__ui.recognise_pushButton.setText("Распознать")
-			self.is_can_start_recognition = True
+			self.__set_buttons_enable(True)
 			self.__set_default_otput_image()
 
-	def __inf_about(self) -> None:
-		msgBox = QMessageBox()
-		strdes = "ПРИМ-221, Абдразаков Дамир\nИВТМ-221, Скидан Роман\n\n2024"
-		msgBox.setText(strdes)
-		msgBox.setWindowTitle("Разработчики")
-		msgBox.exec()
+		if self.__ui.webcam_radioButton.isChecked():
+			self.__ui.uploadVideoSrcAction.setEnabled(False)
+			self.__ui.loadvideo_pushButton.setEnabled(False)
+
+	def __set_buttons_enable(self, value: bool) -> None:
+		self.is_can_start_recognition = value
+		self.__ui.uploadFaceImgAction.setEnabled(value)
+		self.__ui.settingsAction.setEnabled(value)
+		self.__ui.parametres_pushButton.setEnabled(value)
+		self.__ui.processingAction.setEnabled(value)
+		self.__ui.webcam_radioButton.setEnabled(value)
+		self.__ui.video_radioButton.setEnabled(value)
+		self.__ui.loadimages_pushButton.setEnabled(value)
+		self.__ui.clearAllAction.setEnabled(value)
+		self.__ui.clearVideoSrcDataAction.setEnabled(value)
+		self.__ui.clearFaceImgDataAction.setEnabled(value)
+		self.__ui.defaultWebcam.setEnabled(value)
+		self.__ui.useVideoStreamAction.setEnabled(value)
+		self.__ui.uploadVideoSrcAction.setEnabled(value)
+		self.__ui.loadvideo_pushButton.setEnabled(value)
 
 	def __close_app(self) -> None:
 		sys.exit(self)
@@ -138,20 +165,27 @@ class MainWindowView(QMainWindow):
 
 	def __clear_face_data_src(self) -> None:
 		self.__set_default_otput_image()
-		self.clear_faces_src_paths.emit()
+		self.clear_faces_src_paths_signal.emit()
 
 	def __clear_video_data_src(self) -> None:
 		self.__set_default_otput_image()
-		self.clear_video_src_path.emit()
+		self.clear_video_src_path_signal.emit()
 
 	def __set_default_otput_image(self) -> None:
 		self.__ui.Web_label_2.setPixmap(
 			QPixmap(":/mainWindow/images/no-video-128.png")
 		)
 
+	def __inf_about(self) -> None:
+		self.open_about_window_signal.emit()
+
 	def __set_connections(self) -> None:
-		self.__ui.video_radioButton.clicked.connect(self.__check_video)
-		self.__ui.webcam_radioButton.clicked.connect(self.__check_web)
+		self.__ui.video_radioButton.clicked.connect(
+			self.__check_video
+		)
+		self.__ui.webcam_radioButton.clicked.connect(
+			self.__check_web
+		)
 		self.__ui.parametres_pushButton.clicked.connect(
 			self.__open_parametres_win
 		)
@@ -164,23 +198,36 @@ class MainWindowView(QMainWindow):
 		self.__ui.recognise_pushButton.clicked.connect(
 			self.__recognition_processing
 		)
-		self.__ui.aboutProgrammAction.triggered.connect(self.__inf_about)
-		self.__ui.closeAppAction.triggered.connect(self.__close_app)
+		self.__ui.aboutProgrammAction.triggered.connect(
+			self.__inf_about
+		)
+		self.__ui.closeAppAction.triggered.connect(
+			self.__close_app
+		)
 		self.__ui.uploadFaceImgAction.triggered.connect(
 			self.__loadimages_action
 		)
 		self.__ui.uploadVideoSrcAction.triggered.connect(
 			self.__loadvideo_action
 		)
-		self.__ui.settingsAction.triggered.connect(self.__open_parametres_win)
+		self.__ui.settingsAction.triggered.connect(
+			self.__open_parametres_win
+		)
 		self.__ui.processingAction.triggered.connect(
 			self.__recognition_processing
 		)
-		self.__ui.useVideoStreamAction.triggered.connect(self.__check_video)
-		self.__ui.clearAllAction.triggered.connect(self.__clear_all_data_src)
+		self.__ui.useVideoStreamAction.triggered.connect(
+			self.__check_video
+		)
+		self.__ui.clearAllAction.triggered.connect(
+			self.__clear_all_data_src
+		)
 		self.__ui.clearFaceImgDataAction.triggered.connect(
 			self.__clear_face_data_src
 		)
 		self.__ui.clearVideoSrcDataAction.triggered.connect(
 			self.__clear_video_data_src
+		)
+		self.__ui.defaultWebcam.triggered.connect(
+			self.__check_web
 		)

@@ -226,6 +226,7 @@
     <property name="title">
      <string>Помощь</string>
     </property>
+    <addaction name="manualAction"/>
     <addaction name="aboutProgrammAction"/>
    </widget>
    <widget class="QMenu" name="menu">
@@ -255,23 +256,22 @@
     <addaction name="settingsAction"/>
     <addaction name="menu_5"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
+   <widget class="QMenu" name="streamSourcesMenu">
     <property name="title">
      <string>Источник</string>
     </property>
-    <widget class="QMenu" name="menu_4">
+    <widget class="QMenu" name="webcamsListMenu">
      <property name="title">
       <string>Веб-камера</string>
      </property>
-     <addaction name="action_1"/>
-     <addaction name="action_7"/>
+     <addaction name="defaultWebcam"/>
     </widget>
-    <addaction name="menu_4"/>
+    <addaction name="webcamsListMenu"/>
     <addaction name="useVideoStreamAction"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
-   <addaction name="menu_3"/>
+   <addaction name="streamSourcesMenu"/>
    <addaction name="About_menu"/>
   </widget>
   <action name="uploadFaceImgAction">
@@ -356,7 +356,7 @@
     <string>О программе</string>
    </property>
    <property name="shortcut">
-    <string>F1</string>
+    <string>F2</string>
    </property>
   </action>
   <action name="action_15">
@@ -370,6 +370,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="manualAction">
+   <property name="text">
+    <string>Руководство</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="defaultWebcam">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Камера 1</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@ from model.face_recognition_model import FaceRecognitionModel as FRM
 from model.recognition_preparing import *
 from utils.cv_to_qt_converter import *
 from utils.stream_types import StreamTypes
+from utils.webcam_search import *
 from utils.recognition_parameters import RecognitionParameters
 
 class FaceRecognitionController:
@@ -22,10 +23,15 @@ class FaceRecognitionController:
 		self.__output_img_width = 1280
 		self.__output_img_height = 720
 
+		self.__check_and_display_available_webcams()
+
 		self.__main_view.show()
 
 	def set_stream_src(self, stream) -> None:
 		self.__model.stream_src = stream
+
+	def __check_and_display_available_webcams(self) -> None:
+		self.__main_view.add_webcam_sources(get_webcam_list())
 
 	def __stop_recognition(self) -> None:
 		self.__model.stop()
@@ -111,9 +117,9 @@ class FaceRecognitionController:
 		self.__main_view.stream_src_type_signal.connect(
 			self.__set_stream_type
 		)
-		self.__main_view.clear_faces_src_paths.connect(
+		self.__main_view.clear_faces_src_paths_signal.connect(
 			self.__clear_faces_paths
 		)
-		self.__main_view.clear_video_src_path.connect(
+		self.__main_view.clear_video_src_path_signal.connect(
 			self.__clear_video_path
 		)
