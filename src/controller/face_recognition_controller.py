@@ -13,6 +13,9 @@ class FaceRecognitionController:
 		self.__main_view = main_view
 		self.__model = main_model
 
+		self.__paths_to_faces_src = []
+		self.__path_to_video_src = None
+
 		self.__main_view.controller = self
 		self.__connect_signals()
 
@@ -28,6 +31,8 @@ class FaceRecognitionController:
 		self.__model.stop()
 
 	def __start_recognition(self) -> None:
+		self.__model.faces_data = prepare_faces_data(self.__paths_to_faces_src)
+		self.__model.video_src = self.__path_to_video_src
 		self.__model.start()
 
 	def __open_parametres_win(self) -> None:
@@ -53,11 +58,13 @@ class FaceRecognitionController:
 		self.__main_view.update_image(img)
 
 	def __load_face_images(self, paths_to_imgs) -> None:
-		self.__model.faces_data = prepare_faces_data(paths_to_imgs)
+		self.__paths_to_faces_src = list(
+			dict.fromkeys(self.__paths_to_faces_src + paths_to_imgs)
+		)
 
 	def __set_video_str_path(self, path) -> None:
-		self.__model.video_src = path
-
+		self.__path_to_video_src = path
+		
 	def __set_stream_type(self, stream_type) -> None:
 		self.__model.stream_src = stream_type
 
@@ -73,6 +80,12 @@ class FaceRecognitionController:
 		)
 
 		self.__main_view.reset_recognition_status()
+
+	def __clear_faces_paths(self) -> None:
+		self.__paths_to_faces_src = []
+
+	def __clear_video_path(self) -> None:
+		self.__path_to_video_src = None
 
 	def __connect_signals(self) -> None:
 		self.__model.change_image_signal.connect(self.__update_image)
@@ -97,4 +110,10 @@ class FaceRecognitionController:
 		)
 		self.__main_view.stream_src_type_signal.connect(
 			self.__set_stream_type
+		)
+		self.__main_view.clear_faces_src_paths.connect(
+			self.__clear_faces_paths
+		)
+		self.__main_view.clear_video_src_path.connect(
+			self.__clear_video_path
 		)

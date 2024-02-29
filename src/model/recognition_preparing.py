@@ -23,6 +23,4 @@ def prepare_faces_data(paths: list) -> None:
         except:
             print(f"Failed to upload: {path}")
 
-    print(face_names)
-        
     return FacesData(face_images, face_enc, face_names)

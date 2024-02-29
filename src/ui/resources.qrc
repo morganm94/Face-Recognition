@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="mainWindow">
+    <file>images/no-video-128.png</file>
     <file>images/Icon.ico</file>
   </qresource>
 </RCC>
