@@ -1,16 +1,16 @@
 from copy import deepcopy
-from PyQt5.QtWidgets import QWidget, QColorDialog
+from PyQt5.QtWidgets import QDialog, QColorDialog
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QColor
 from .recognition_parameters_window import Ui_Form as rpw_ui_form
 from utils.recognition_parameters import RecognitionParameters
 
-class RecognitionParametersWindowView(QWidget):
+class RecognitionParametersWindowView(QDialog):
 
 	changed_recognition_params_signal = pyqtSignal(RecognitionParameters)
 
 	def __init__(self, params) -> None:
-		super(QWidget, self).__init__(None)
+		super(QDialog, self).__init__(None)
 
 		self.__params = params
 

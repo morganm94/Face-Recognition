@@ -21,6 +21,6 @@ def prepare_faces_data(paths: list) -> None:
             file_name = Path(path).stem
             face_names.append(file_name)
         except:
-            print(f"Failed to upload: {path}")
+            pass
 
     return FacesData(face_images, face_enc, face_names)

@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtWidgets import QWidget, QMessageBox
 from view.recognition_parameters_window_view import RecognitionParametersWindowView
+from view.about_window_view import AboutWindowView
 from model.face_recognition_model import FaceRecognitionModel as FRM
 from model.recognition_preparing import *
 from utils.cv_to_qt_converter import *
@@ -45,11 +46,10 @@ class FaceRecognitionController:
 		self.__parameters_win = RecognitionParametersWindowView(
 			self.__model.recognition_params
 		)
-		self.__parameters_win.show()
-
 		self.__parameters_win.changed_recognition_params_signal.connect(
 			self.__recognition_parameters_changed
 		)
+		self.__parameters_win.exec()
 
 	def __set_output_image_size(self, size) -> None:
 		self.__output_img_width = size[0]
@@ -76,6 +76,7 @@ class FaceRecognitionController:
 
 	def __recognition_parameters_changed(self, params: RecognitionParameters) -> None:
 		self.__model.recognition_params = params
+		print("Here")
 
 	def __show_empy_path_error(self) -> None:
 		usr_responce = QMessageBox.warning(
@@ -93,9 +94,17 @@ class FaceRecognitionController:
 	def __clear_video_path(self) -> None:
 		self.__path_to_video_src = None
 
+	def __display_about_window(self) -> None:
+		self.__about_window = AboutWindowView()
+		self.__about_window.exec()
+
 	def __connect_signals(self) -> None:
-		self.__model.change_image_signal.connect(self.__update_image)
-		self.__model.on_empty_video_path_signal.connect(self.__show_empy_path_error)
+		self.__model.change_image_signal.connect(
+			self.__update_image
+		)
+		self.__model.on_empty_video_path_signal.connect(
+			self.__show_empy_path_error
+		)
 		self.__main_view.change_image_output_size_signal.connect(
 			self.__set_output_image_size
 		)
@@ -122,4 +131,7 @@ class FaceRecognitionController:
 		)
 		self.__main_view.clear_video_src_path_signal.connect(
 			self.__clear_video_path
+		)
+		self.__main_view.open_about_window_signal.connect(
+			self.__display_about_window
 		)
