@@ -1,3 +1,4 @@
+import sys
 from numpy import ndarray
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap
@@ -57,20 +58,30 @@ class MainWindowView(QMainWindow):
 
 	def __check_video(self) -> None:
 		if self.__ui.video_radioButton.isChecked():
-			self.stream_src_type_signal.emit(StreamTypes.video)
-			self.__ui.loadvideo_pushButton.setEnabled(True)
-			self.__ui.webcam_groupBox.setTitle("Видео")
+			self.__ui.useVideoStreamAction.setChecked(True)
+
+		if self.__ui.useVideoStreamAction.isChecked():
+			self.__ui.video_radioButton.setChecked(True)
+
+		self.__ui.uploadVideoSrcAction.setEnabled(True)
+		self.__ui.loadvideo_pushButton.setEnabled(True)
+		self.__ui.webcam_groupBox.setTitle("Видео")
+		self.stream_src_type_signal.emit(StreamTypes.video)
 
 	def __check_web(self) -> None:
 		if self.__ui.webcam_radioButton.isChecked():
-			self.stream_src_type_signal.emit(StreamTypes.webcam)
-			self.__ui.loadvideo_pushButton.setEnabled(False)
-			self.__ui.webcam_groupBox.setTitle("Веб-камера")
+			pass
+
+		self.__ui.useVideoStreamAction.setChecked(False)
+		self.__ui.uploadVideoSrcAction.setEnabled(False)
+		self.__ui.loadvideo_pushButton.setEnabled(False)
+		self.stream_src_type_signal.emit(StreamTypes.webcam)
+		self.__ui.webcam_groupBox.setTitle("Веб-камера")
 
 	def __open_parametres_win(self) -> None:
 		self.open_recognition_parameters_win_signal.emit()
 
-	def __loadimages_pushButton_clicked(self) -> None:
+	def __loadimages_action(self) -> None:
 		options = QFileDialog.Options()
 		selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
 		fileNames, _ = QFileDialog.getOpenFileNames(
@@ -84,7 +95,7 @@ class MainWindowView(QMainWindow):
 		if fileNames:
 			self.face_images_load_signal.emit(fileNames)
 
-	def __loadvideo_pushButton_clicked(self) -> None:
+	def __loadvideo_action(self) -> None:
 		options = QFileDialog.Options()
 		selfilter = "Videos (*.mp4 *.avi *.mpeg)"
 		fileName, _ = QFileDialog.getOpenFileName(
@@ -108,18 +119,15 @@ class MainWindowView(QMainWindow):
 			self.__ui.recognise_pushButton.setText("Распознать")
 			self.is_can_start_recognition = True
 
-	def __inf_describe(self, sender):
+	def __inf_about(self, sender) -> None:
 		msgBox = QMessageBox()
-		msgBox.setText("Приложение позволяет определять личности по загруженным изображением лиц.\n\nИмеется возможность выбрать распознавание как с вебкамеры, так и с загруженного видеоматериала.\n\nВ окне параметров пользователь может изменять точность распознавания и другие характеристики.")
-		msgBox.setWindowTitle("Описание приложения")
+		strdes = "ПРИМ-221, Абдразаков Дамир\nИВТМ-221, Скидан Роман\n\n2024"
+		msgBox.setText(strdes)
+		msgBox.setWindowTitle("Разработчики")
 		msgBox.exec()
 
-	def __inf_designers(self, sender):
-		msgBox = QMessageBox()
-		strdes = "Волгоградский государственный университет \nПРИМ-221\nАбдразаков Дамир\nИВТМ-221\nСкидан Роман\n2024"
-		msgBox.setText(strdes)
-		msgBox.setWindowTitle("Информация о разработчиках")
-		msgBox.exec()
+	def __close_app(self, sender) -> None:
+		sys.exit(self)
 
 	def __set_connections(self) -> None:
 		self.__ui.video_radioButton.clicked.connect(self.__check_video)
@@ -128,13 +136,18 @@ class MainWindowView(QMainWindow):
 			self.__open_parametres_win
 		)
 		self.__ui.loadimages_pushButton.clicked.connect(
-        	self.__loadimages_pushButton_clicked
-        )
+			self.__loadimages_action
+		)
 		self.__ui.loadvideo_pushButton.clicked.connect(
-			self.__loadvideo_pushButton_clicked
+			self.__loadvideo_action
 		)
 		self.__ui.recognise_pushButton.clicked.connect(
 			self.__recognition_processing
 		)
-		self.__ui.designers_action.triggered.connect(self.__inf_designers)
-		self.__ui.inf_action.triggered.connect(self.__inf_describe)
+		self.__ui.aboutProgrammAction.triggered.connect(self.__inf_about)
+		self.__ui.closeAppAction.triggered.connect(self.__close_app)
+		self.__ui.uploadFaceImgAction.triggered.connect(self.__loadimages_action)
+		self.__ui.uploadVideoSrcAction.triggered.connect(self.__loadvideo_action)
+		self.__ui.settingsAction.triggered.connect(self.__open_parametres_win)
+		self.__ui.processingAction.triggered.connect(self.__recognition_processing)
+		self.__ui.useVideoStreamAction.triggered.connect(self.__check_video)

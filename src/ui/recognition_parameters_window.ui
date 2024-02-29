@@ -45,6 +45,10 @@
   <property name="windowTitle">
    <string>Параметры</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/mainWindow/images/Icon.ico</normaloff>:/mainWindow/images/Icon.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="rightMargin">
     <number>9</number>
@@ -367,6 +371,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

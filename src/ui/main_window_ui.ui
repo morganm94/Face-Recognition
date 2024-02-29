@@ -212,11 +212,154 @@
    </property>
    <widget class="QMenu" name="About_menu">
     <property name="title">
-     <string>О программе</string>
+     <string>Помощь</string>
     </property>
+    <addaction name="aboutProgrammAction"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="uploadFaceImgAction"/>
+    <addaction name="uploadVideoSrcAction"/>
+    <addaction name="separator"/>
+    <addaction name="closeAppAction"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Обработка</string>
+    </property>
+    <widget class="QMenu" name="menu_5">
+     <property name="title">
+      <string>Очистка данных</string>
+     </property>
+     <addaction name="clearFaceImgDataAction"/>
+     <addaction name="clearVideoSrcDataAction"/>
+     <addaction name="separator"/>
+     <addaction name="clearAllAction"/>
+    </widget>
+    <addaction name="processingAction"/>
+    <addaction name="separator"/>
+    <addaction name="settingsAction"/>
+    <addaction name="menu_5"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Источник</string>
+    </property>
+    <widget class="QMenu" name="menu_4">
+     <property name="title">
+      <string>Веб-камера</string>
+     </property>
+     <addaction name="action_1"/>
+     <addaction name="action_7"/>
+    </widget>
+    <addaction name="menu_4"/>
+    <addaction name="useVideoStreamAction"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
    <addaction name="About_menu"/>
   </widget>
+  <action name="uploadFaceImgAction">
+   <property name="text">
+    <string>Загрузить изображения лиц</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="uploadVideoSrcAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Загрузить видео источник</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="closeAppAction">
+   <property name="text">
+    <string>Закрыть</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="useVideoStreamAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Видео</string>
+   </property>
+  </action>
+  <action name="action_1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Камера 1</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Камера 2</string>
+   </property>
+  </action>
+  <action name="settingsAction">
+   <property name="text">
+    <string>Параметры</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="clearFaceImgDataAction">
+   <property name="text">
+    <string>Очистка изображений</string>
+   </property>
+  </action>
+  <action name="clearVideoSrcDataAction">
+   <property name="text">
+    <string>Очистка видео источника</string>
+   </property>
+  </action>
+  <action name="clearAllAction">
+   <property name="text">
+    <string>Очистить всё</string>
+   </property>
+  </action>
+  <action name="aboutProgrammAction">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>Разработчики</string>
+   </property>
+  </action>
+  <action name="processingAction">
+   <property name="text">
+    <string>Распознать</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
