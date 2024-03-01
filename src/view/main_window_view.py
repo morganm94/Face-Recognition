@@ -20,6 +20,7 @@ class MainWindowView(QMainWindow):
 	clear_video_src_path_signal = pyqtSignal()
 	clear_faces_src_paths_signal = pyqtSignal()
 	open_about_window_signal = pyqtSignal()
+	open_manual_window_signal = pyqtSignal()
 
 	is_can_start_recognition = True
 	
@@ -93,9 +94,6 @@ class MainWindowView(QMainWindow):
 		self.stream_src_type_signal.emit(StreamTypes.webcam)
 		self.__ui.webcam_groupBox.setTitle("Веб-камера")
 
-	def __open_parametres_win(self) -> None:
-		self.open_recognition_parameters_win_signal.emit()
-
 	def __loadimages_action(self) -> None:
 		options = QFileDialog.Options()
 		selfilter = "Images (*.png *.xpm *.jpg *.jpeg)"
@@ -126,14 +124,14 @@ class MainWindowView(QMainWindow):
 
 	def __recognition_processing(self) -> None:
 		if self.is_can_start_recognition:
-			self.start_recognition_signal.emit()
 			self.__ui.recognise_pushButton.setText("Прекратить")
 			self.__set_buttons_enable(False)
+			self.start_recognition_signal.emit()
 		else:
-			self.stop_recognition_signal.emit()
 			self.__ui.recognise_pushButton.setText("Распознать")
 			self.__set_buttons_enable(True)
 			self.__set_default_otput_image()
+			self.stop_recognition_signal.emit()
 
 		if self.__ui.webcam_radioButton.isChecked():
 			self.__ui.uploadVideoSrcAction.setEnabled(False)
@@ -156,9 +154,6 @@ class MainWindowView(QMainWindow):
 		self.__ui.uploadVideoSrcAction.setEnabled(value)
 		self.__ui.loadvideo_pushButton.setEnabled(value)
 
-	def __close_app(self) -> None:
-		sys.exit(self)
-
 	def __clear_all_data_src(self) -> None:
 		self.__clear_face_data_src()
 		self.__clear_video_data_src()
@@ -176,18 +171,27 @@ class MainWindowView(QMainWindow):
 			QPixmap(":/mainWindow/images/no-video-128.png")
 		)
 
-	def __inf_about(self) -> None:
-		self.open_about_window_signal.emit()
-
 	def __set_connections(self) -> None:
+		self.__ui.parametres_pushButton.clicked.connect(
+			lambda: self.open_recognition_parameters_win_signal.emit()
+		)
+		self.__ui.settingsAction.triggered.connect(
+			lambda: self.open_recognition_parameters_win_signal.emit()
+		)
+		self.__ui.manualAction.triggered.connect(
+			lambda: self.open_manual_window_signal.emit()
+		)
+		self.__ui.aboutProgrammAction.triggered.connect(
+			lambda: self.open_about_window_signal.emit()
+		)
+		self.__ui.closeAppAction.triggered.connect(
+			lambda: sys.exit(self)
+		)
 		self.__ui.video_radioButton.clicked.connect(
 			self.__check_video
 		)
 		self.__ui.webcam_radioButton.clicked.connect(
 			self.__check_web
-		)
-		self.__ui.parametres_pushButton.clicked.connect(
-			self.__open_parametres_win
 		)
 		self.__ui.loadimages_pushButton.clicked.connect(
 			self.__loadimages_action
@@ -198,20 +202,11 @@ class MainWindowView(QMainWindow):
 		self.__ui.recognise_pushButton.clicked.connect(
 			self.__recognition_processing
 		)
-		self.__ui.aboutProgrammAction.triggered.connect(
-			self.__inf_about
-		)
-		self.__ui.closeAppAction.triggered.connect(
-			self.__close_app
-		)
 		self.__ui.uploadFaceImgAction.triggered.connect(
 			self.__loadimages_action
 		)
 		self.__ui.uploadVideoSrcAction.triggered.connect(
 			self.__loadvideo_action
-		)
-		self.__ui.settingsAction.triggered.connect(
-			self.__open_parametres_win
 		)
 		self.__ui.processingAction.triggered.connect(
 			self.__recognition_processing

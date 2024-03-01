@@ -18,6 +18,8 @@ class FaceRecognitionController:
 		self.__paths_to_faces_src = []
 		self.__path_to_video_src = None
 
+		self.__availabel_webcams = []
+
 		self.__main_view.controller = self
 		self.__connect_signals()
 
@@ -32,12 +34,17 @@ class FaceRecognitionController:
 		self.__model.stream_src = stream
 
 	def __check_and_display_available_webcams(self) -> None:
-		self.__main_view.add_webcam_sources(get_webcam_list())
+		self.__availabel_webcams = get_webcam_list()
+		self.__main_view.add_webcam_sources(self.__availabel_webcams)
 
 	def __stop_recognition(self) -> None:
 		self.__model.stop()
 
 	def __start_recognition(self) -> None:
+		if not self.__availabel_webcams:
+			self.__show_no_available_webcam_error()
+			return
+
 		self.__model.faces_data = prepare_faces_data(self.__paths_to_faces_src)
 		self.__model.video_src = self.__path_to_video_src
 		self.__model.start()
@@ -76,13 +83,22 @@ class FaceRecognitionController:
 
 	def __recognition_parameters_changed(self, params: RecognitionParameters) -> None:
 		self.__model.recognition_params = params
-		print("Here")
 
 	def __show_empy_path_error(self) -> None:
 		usr_responce = QMessageBox.warning(
 			self.__main_view, 
 			"Внимание!",
 			"Видео для распознавания не загружено",
+			QMessageBox.Cancel
+		)
+
+		self.__main_view.reset_recognition_status()
+
+	def __show_no_available_webcam_error(self) -> None:
+		usr_responce = QMessageBox.warning(
+			self.__main_view, 
+			"Внимание!",
+			"Нет доступных веб-камер для использования",
 			QMessageBox.Cancel
 		)
 
@@ -97,6 +113,14 @@ class FaceRecognitionController:
 	def __display_about_window(self) -> None:
 		self.__about_window = AboutWindowView()
 		self.__about_window.exec()
+
+	def __open_manual_window(self) -> None:
+		usr_responce = QMessageBox.information(
+			self.__main_view, 
+			"Руководство",
+			"Тут могло быть руководство пользователя.",
+			QMessageBox.Cancel
+		)
 
 	def __connect_signals(self) -> None:
 		self.__model.change_image_signal.connect(
@@ -134,4 +158,7 @@ class FaceRecognitionController:
 		)
 		self.__main_view.open_about_window_signal.connect(
 			self.__display_about_window
+		)
+		self.__main_view.open_manual_window_signal.connect(
+			self.__open_manual_window
 		)
