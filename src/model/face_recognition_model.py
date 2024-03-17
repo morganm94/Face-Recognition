@@ -64,6 +64,10 @@ class FaceRecognitionModel(QThread):
         while self.__is_recognition_enabled:
             ret, frame = stream_capture.read()
 
+            if not ret:
+                self.__is_recognition_enabled = False
+                return
+
             if process_current_frame and self.__faces_data is not None:
                 rgb_frame = self.__bgr_to_rgb_frame(frame)
                 scaled_frame = self.__scale_frame(

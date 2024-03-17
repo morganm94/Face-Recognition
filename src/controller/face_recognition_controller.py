@@ -41,7 +41,8 @@ class FaceRecognitionController:
 		self.__model.stop()
 
 	def __start_recognition(self) -> None:
-		if not self.__availabel_webcams:
+		isWebcamStreamType = self.__model.stream_src == StreamTypes.webcam
+		if not self.__availabel_webcams and isWebcamStreamType:
 			self.__show_no_available_webcam_error()
 			return
 
