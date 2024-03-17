@@ -163,7 +163,7 @@ class Ui_AboutProgrammDialog(object):
         self.label_2.setText(_translate("AboutProgrammDialog", "Исходные файлы:"))
         self.label_5.setText(_translate("AboutProgrammDialog", "<a href=\'https://github.com/R1ma0/AD_FaceRecognition\'>GitHub.com</a>"))
         self.label_3.setText(_translate("AboutProgrammDialog", "Версия"))
-        self.label_6.setText(_translate("AboutProgrammDialog", "v2.1.1"))
+        self.label_6.setText(_translate("AboutProgrammDialog", "v2.1.2"))
         self.label_8.setText(_translate("AboutProgrammDialog", "Разработка интерфейса:"))
         self.label_7.setText(_translate("AboutProgrammDialog", "namar34"))
         self.label_10.setText(_translate("AboutProgrammDialog", "Разработка бизнесс-логики:"))
