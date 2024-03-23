@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition and Heart Rate Measurement</title>
+</head>
+<body>
+    <h1>Welcome to the Face Recognition and Heart Rate Measurement Web App</h1>
+    
+    <form action="/process" method="POST" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="age">Age:</label>
+        <input type="text" name="age" required><br>
+
+        <label for="image">Upload an image:</label>
+        <input type="file" name="image" accept="image/*" required><br>
+
+        <input type="submit" value="Check Heart Rate">
+    </form>
+</body>
+</html>
